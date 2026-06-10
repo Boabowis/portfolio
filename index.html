@@ -118,10 +118,36 @@
                                     <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
                                     <span style="display:block; margin-bottom: 25px;">Canal de transmisión de datos encriptado y listo.</span>
                                     
-                                    <strong style="display:block; margin-bottom:5px;">[ DIRECTIVA ]</strong>
-                                    <span style="display:block; margin-bottom: 25px;">Para iniciar una transferencia de datos o proponer una oferta de reclutamiento, envíe un mensaje a la dirección de red inferior.</span>
+                                    <form id="contact-form" class="terminal-form">
+                                        <div style="margin-bottom: 15px; border-bottom: 1px dashed #1aff1a; padding-bottom: 10px;">
+                                            &gt; DESTINO: <span style="color: #1aff1a; font-weight: bold; text-shadow: 0 0 5px rgba(26,255,26,0.5);">alba.rubia2@live.com</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sys_name">SYSTEM_USER_NAME &gt;</label>
+                                            <input type="text" id="sys_name" name="sys_name" class="terminal-input" placeholder="[ Introduzca su identificador ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sender_email">SENDER_EMAIL &gt;</label>
+                                            <input type="email" id="sender_email" name="email" class="terminal-input" placeholder="[ Introduzca su dirección de red ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comms_subject">COMMS_SUBJECT &gt;</label>
+                                            <input type="text" id="comms_subject" name="subject" class="terminal-input" placeholder="[ Motivo de la transmisión ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enter_data">ENTER_DATA &gt;&gt;</label>
+                                            <textarea id="enter_data" name="message" class="terminal-input" rows="4" placeholder="[ Procesando entrada de datos... ]" required></textarea>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="terminal-btn">[ TRANSMITIR_DATOS ]</button>
+                                            <button type="reset" class="terminal-btn">[ ABORTAR_CONEXION ]</button>
+                                        </div>
+                                    </form>
                                     
-                                    &gt; ENLACE DE RED: <a href="mailto:alba.rubia2@live.com" class="terminal-link">alba.rubia2@live.com</a>
+                                    <div id="success-tick" class="hidden" style="margin-top: 25px; color: #1aff1a; font-weight: bold; font-size: 1.5rem; text-align: center; border: 1px dashed #1aff1a; padding: 15px; background-color: rgba(26,255,26,0.05); box-shadow: 0 0 10px rgba(26,255,26,0.3);">
+                                        <span style="animation: blink 1s infinite;">[ ✓ ] DATOS TRANSMITIDOS CON ÉXITO</span>
+                                        <p style="font-size: 1rem; font-weight: normal; margin-top: 10px; color: rgba(26,255,26,0.8); animation: none;">Protocolo de enlace cerrado temporalmente.</p>
+                                    </div>
                                 </p>
                             </div>
                             <div class="email-hacking-column">
@@ -421,6 +447,58 @@
             interactiveZone.classList.remove('hidden');
             interactiveZone.classList.add('fade-in');
         }
+        // CAPTURAR EL ENVÍO DEL FORMULARIO SIN RECARGAR LA PÁGINA (INTEGRACIÓN FORMSPREE)
+        document.addEventListener('submit', function(e) {
+            if (e.target && e.target.id === 'contact-form') {
+                e.preventDefault(); // Evita que la página se reinicie
+                playPipBoySound(); // Sonido de feedback
+
+                // Recoger datos automáticamente de los inputs
+                const formData = new FormData(e.target);
+
+                // Enviar a Formspree en segundo plano (Fetch API)
+                fetch("https://formspree.io/f/xeewzbqa", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        // Feedback visual sutil simulando procesamiento exitoso
+                        const formWrapper = document.getElementById('email-content-wrapper');
+                        const formElement = document.getElementById('contact-form');
+                        const successTick = document.getElementById('success-tick');
+                        
+                        formWrapper.classList.add('glitch-effect');
+                        setTimeout(() => {
+                            formWrapper.classList.remove('glitch-effect');
+                            
+                            // Ocultamos formulario temporalmente y mostramos el tick
+                            if(formElement && successTick) {
+                                formElement.style.display = 'none';
+                                successTick.classList.remove('hidden');
+                                successTick.classList.add('fade-in');
+                                
+                                // A los 6 segundos restauramos todo
+                                setTimeout(() => {
+                                    successTick.classList.remove('fade-in');
+                                    successTick.classList.add('hidden');
+                                    formElement.style.display = 'flex'; // terminal-form es display flex
+                                    e.target.reset(); // Vaciamos los campos
+                                }, 6000);
+                            }
+                        }, 400);
+                    } else {
+                        // Si ocurre un error con el servidor
+                        alert("[ ERROR ] Fallo en la transmisión de red. El servidor remoto denegó la conexión.");
+                    }
+                }).catch(error => {
+                    // Si ocurre un error crítico de conexión a internet
+                    alert("[ ERROR CRÍTICO ] No se pudo establecer conexión de red. Compruebe su terminal.");
+                });
+            }
+        });
     </script>
 </body>
 </html>

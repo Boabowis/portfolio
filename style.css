@@ -435,3 +435,71 @@ body {
     /* Invertimos y coloreamos el SVG para que parezca verde sobre negro, y le damos sombra CRT */
     filter: invert(0.8) sepia(1) saturate(50) hue-rotate(70deg) drop-shadow(0 0 5px rgba(26, 255, 26, 0.5));
 }
+
+/* ESTILOS DEL FORMULARIO DE COMUNICACIONES */
+.terminal-form {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #00ff00;
+}
+
+.terminal-input {
+    background-color: rgba(0, 0, 0, 0.6); /* Negro muy oscuro con ligera transparencia */
+    border: 1px solid rgba(0, 255, 0, 0.4); /* Verde fósforo con opacidad */
+    color: #00ff00;
+    font-family: 'Share Tech Mono', monospace; /* Tipografía monoespaciada */
+    font-size: 1.1rem;
+    padding: 10px;
+    outline: none;
+    text-shadow: 0 0 4px rgba(0, 255, 0, 0.6); /* Sutil text-shadow de brillo */
+    transition: all 0.2s ease-in-out;
+    width: 100%;
+    resize: none; /* Evitar resize para no romper la interfaz */
+}
+
+.terminal-input::placeholder {
+    color: rgba(0, 255, 0, 0.25); /* Verde muy apagado */
+    text-shadow: none;
+}
+
+.terminal-input:focus {
+    border-color: #00ff00; /* Brillo intenso */
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.6), inset 0 0 5px rgba(0, 255, 0, 0.2); /* Box-shadow de brillo de fósforo */
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.terminal-btn {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
+    /* Sin transiciones para el estilo menú Pip-Boy */
+}
+
+.terminal-btn:hover {
+    background-color: #00ff00; /* Invertir colores */
+    color: #000000;
+    text-shadow: none;
+    font-weight: bold;
+}
