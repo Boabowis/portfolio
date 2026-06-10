@@ -195,15 +195,16 @@ body {
 
 .content-display {
     flex-grow: 1;
-    padding: 20px 20px 20px 40px; /* Mayor separación de la línea divisoria izquierda */
-    overflow-y: auto; /* Si el texto es muy largo, permite scroll en la parte derecha sin descuadrar el resto */
+    height: 100%; /* CLAVE: Darle altura estricta para que el min-height hijo funcione */
+    padding: 20px 20px 20px 40px;
+    overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
 }
 
 .main-tab-content {
-    flex-grow: 1;
+    min-height: 100%; /* Ahora sí funcionará */
     display: flex;
     flex-direction: column;
 }
@@ -214,6 +215,7 @@ body {
     align-items: center;
     flex-grow: 1;
     width: 100%;
+    margin: auto 0; /* Asegura el centrado vertical estricto */
 }
 
 .stats-column {
