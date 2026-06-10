@@ -190,6 +190,7 @@ body {
     background-color: rgba(26, 255, 26, 0.02);
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Fuerza a que no crezca más allá de la pantalla */
 }
 
 .content-display {
@@ -502,4 +503,45 @@ body {
     color: #000000;
     text-shadow: none;
     font-weight: bold;
+}
+
+/* RESPONSIVE PARA PANTALLAS PEQUEÑAS / MÓVILES */
+@media (max-width: 850px) {
+    .layout-container {
+        flex-direction: column;
+    }
+    .side-menu {
+        width: 100%;
+        min-width: 100%;
+        border-right: none;
+        border-bottom: 2px dashed rgba(26, 255, 26, 0.3);
+        padding-right: 0;
+        padding-bottom: 20px;
+    }
+    .pipboy-nav-vertical {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-left: 0;
+        padding-left: 0;
+        justify-content: center;
+    }
+    .content-display {
+        padding: 20px 0 0 0;
+    }
+    .stats-grid-layout {
+        flex-direction: column;
+    }
+    .stats-column {
+        width: 100%;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    .stats-center {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .vaultboy-central-container img {
+        height: 150px;
+    }
 }
