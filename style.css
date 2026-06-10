@@ -6,7 +6,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Share Tech Mono', monospace;
-    overflow: hidden;
 }
 
 body {
@@ -14,6 +13,7 @@ body {
     color: #1aff1a; /* Verde fósforo brillante */
     text-shadow: 0 0 5px rgba(26, 255, 26, 0.7);
     height: 100vh;
+    overflow: hidden;
 }
 
 /* EFECTO CRT (LÍNEAS DE MONITOR) */
@@ -200,7 +200,7 @@ body {
 }
 
 .main-tab-content {
-    height: 100%;
+    min-height: 100%;
 }
 
 /* DISEÑO GRID EN ENTORNO STATS */
@@ -311,7 +311,7 @@ body {
     display: flex;
     flex-wrap: wrap; /* Para responsive, se apila si la pantalla es pequeña */
     gap: 40px;
-    height: 100%;
+    min-height: 100%;
     align-items: flex-start; /* Alineación superior como en stats */
 }
 
@@ -375,7 +375,7 @@ body {
     display: flex;
     flex-wrap: wrap; /* Responsive */
     gap: 40px;
-    height: 100%;
+    min-height: 100%;
     align-items: flex-start; /* Alineado arriba */
 }
 
