@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault-Tec OS v101</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="crt-lines"></div>
+
+    <div id="vault-door-screen" onclick="openVault()">
+        <div class="door-container">
+            <div class="vault-door">
+                <div class="door-center">101</div>
+            </div>
+            <p class="door-prompt">HAGA CLIC PARA ABRIR EL REFUGIO</p>
+        </div>
+    </div>
+
+    <div id="pipboy-interface" class="hidden">
+        <header class="pipboy-header">
+            <div class="header-title">VAULT-TEC OS v1.0</div>
+            <div class="header-name">USUARIO: ALBA HOCES</div>
+        </header>
+
+        <main class="pipboy-content">
+            <div class="layout-container">
+                <aside class="side-menu">
+                    <h2 class="welcome-text">BIENVENIDO AL TERMINAL 101</h2>
+                    <nav class="pipboy-nav-vertical">
+                        <button class="nav-btn" onclick="changeTab('stats')">[ STATS ]</button>
+                        <button class="nav-btn" onclick="changeTab('proyectos')">[ PROYECTOS ]</button>
+                        <button class="nav-btn" onclick="changeTab('linkedin')">[ LINKEDIN ]</button>
+                        <button class="nav-btn" onclick="changeTab('email')">[ EMAIL ]</button>
+                    </nav>
+                </aside>
+                
+                <section id="tab-display-area" class="content-display">
+                    <!-- CONTENIDO DE INICIO -->
+                    <div id="tab-inicio" class="main-tab-content fade-in" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                        <div style="width: 180px; height: 180px; border: 4px solid #1aff1a; border-radius: 50%; margin-bottom: 30px; overflow: hidden; display: flex; justify-content: center; align-items: center; background-color: rgba(26,255,26,0.05); position: relative; box-shadow: 0 0 15px rgba(26,255,26,0.3);">
+                            <!-- La foto se cargará desde foto-alba.jpg y el CSS hará la magia verde retro -->
+                            <img src="foto-alba.jpg" alt="Foto de Alba" style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) sepia(100%) hue-rotate(70deg) saturate(400%) contrast(1.2); position: relative; z-index: 2;">
+                            <span style="position: absolute; font-size: 1rem; z-index: 1;">[ FOTO ]</span>
+                        </div>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 15px;">HOLA, SOY ALBA HOCES</h2>
+                        <p style="font-size: 1.5rem; margin-bottom: 40px; text-shadow: none; color: rgba(26, 255, 26, 0.8);">Bienvenido a mi portfolio personal en el Terminal 101.</p>
+                        <p style="font-size: 1.2rem; color: #1aff1a; animation: blink 1.5s infinite;">> SELECCIONE UNA OPCIÓN DEL MENÚ PARA COMENZAR_</p>
+                    </div>
+
+                    <!-- CONTENIDO DE STATS -->
+                    <div id="tab-stats" class="main-tab-content hidden">
+                        <div id="stats-interactive-zone" class="stats-grid-layout">
+                            <div class="stats-column left-side">
+                                <button class="stats-panel-btn" onclick="triggerGlitch('perfil')">[ PERFIL PROFESIONAL ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('estudios')">[ ESTUDIOS ]</button>
+                            </div>
+
+                            <div class="stats-center">
+                                <div class="vaultboy-central-container">
+                                    <img id="vaultboy-img" src="vaultboy-normal.gif" alt="Vault Boy">
+                                </div>
+                            </div>
+
+                            <div class="stats-column right-side">
+                                <button class="stats-panel-btn" onclick="triggerGlitch('experiencia')">[ EXPERIENCIA ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('habilidades')">[ HABILIDADES ]</button>
+                            </div>
+                        </div>
+
+                        <div id="stats-data-display" class="hidden">
+                            <button class="back-btn" onclick="backToStatsMenu()">[ &lt;&lt; VOLVER AL MENÚ STATS ]</button>
+                            <div id="stats-detailed-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO DE PROYECTOS -->
+                    <div id="tab-proyectos" class="main-tab-content hidden" style="height: 100%;">
+                        <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                            <h2 style="font-size: 4rem; text-align: center; animation: blink 2s infinite; color: #1aff1a; text-shadow: 0 0 15px rgba(26,255,26,0.8);">[ WORK IN PROGRESS ]</h2>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO DE LINKEDIN -->
+                    <div id="tab-linkedin" class="main-tab-content hidden" style="height: 100%;">
+                        <div class="linkedin-layout" id="linkedin-content-wrapper">
+                            <div class="linkedin-text-column">
+                                <h2>&gt; ENLACE DE RED EXTERNA (LINKEDIN)</h2>
+                                <hr style="border: 1px dashed #1aff1a; margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Conexión lista para vinculación externa.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ PROTOCOLO DE ACCESO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Haz clic en el enlace inferior para abrir el perfil profesional en una nueva terminal o escanea el código de espectro de la derecha.</span>
+                                    
+                                    &gt; ENLACE DIRECTO: <a href="https://www.linkedin.com/in/albahoces/" target="_blank" class="terminal-link">https://www.linkedin.com/in/albahoces/</a>
+                                </p>
+                            </div>
+                            <div class="linkedin-qr-column">
+                                <div class="qr-container">
+                                    <span class="qr-label">[ CÓDIGO QR ]</span>
+                                    <img src="qr-linkedin.svg" alt="LinkedIn QR" class="qr-image" id="qr-image" style="clip-path: inset(100% 0 0 0);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO DE EMAIL -->
+                    <div id="tab-email" class="main-tab-content hidden" style="height: 100%;">
+                        <div class="email-layout" id="email-content-wrapper">
+                            <div class="email-text-column">
+                                <h2>&gt; TERMINAL DE COMUNICACIONES ENTRANTE</h2>
+                                <hr style="border: 1px dashed #1aff1a; margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Canal de transmisión de datos encriptado y listo.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ DIRECTIVA ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Para iniciar una transferencia de datos o proponer una oferta de reclutamiento, envíe un mensaje a la dirección de red inferior.</span>
+                                    
+                                    &gt; ENLACE DE RED: <a href="mailto:alba.rubia2@live.com" class="terminal-link">alba.rubia2@live.com</a>
+                                </p>
+                            </div>
+                            <div class="email-hacking-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ SUBPROCESO_DE_CIFRADO ]</span>
+                                    <div class="hacking-code">
+                                        0xEC40 [?] SYSTEM__<br>
+                                        0xEC4C {INIT_MAIL_PROTOCOL}<br>
+                                        0xEC58 %$ ! / * # @ &amp; [LIVE]<br>
+                                        0xEC64 COMMS_ESTABLISHED_
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let audioCtx;
+        let originalTabContents = {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            originalTabContents['linkedin'] = document.getElementById('linkedin-content-wrapper').innerHTML;
+            originalTabContents['email'] = document.getElementById('email-content-wrapper').innerHTML;
+        });
+
+        function playVaultDoorSound() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc1.type = 'sawtooth';
+            osc2.type = 'square';
+            
+            // Frecuencias bajas bajando de tono simulando maquinaria pesada
+            osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc1.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 1.2);
+            
+            osc2.frequency.setValueAtTime(100, audioCtx.currentTime);
+            osc2.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 1.2);
+
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+
+            osc1.connect(gainNode);
+            osc2.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+            osc1.stop(audioCtx.currentTime + 1.2);
+            osc2.stop(audioCtx.currentTime + 1.2);
+        }
+
+        function openVault() {
+            playVaultDoorSound(); // Efecto de engranajes abriéndose
+
+            const doorScreen = document.getElementById('vault-door-screen');
+            const interface = document.getElementById('pipboy-interface');
+            
+            // Añade la clase de animación para que la puerta ruede y se vaya
+            doorScreen.classList.add('open-animation');
+            
+            // Muestra la interfaz del terminal justo después
+            setTimeout(() => {
+                doorScreen.style.display = 'none';
+                interface.classList.remove('hidden');
+                interface.classList.add('fade-in');
+            }, 1200); // Duración de la animación de la puerta
+        }
+        function playPipBoySound() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = 'square'; // Sonido electrónico retro
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.1);
+
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        function changeTab(tabName) {
+            playPipBoySound();
+
+            if (typeWriterInterval) clearInterval(typeWriterInterval);
+
+            // Ocultar todas las pestañas
+            document.querySelectorAll('.main-tab-content').forEach(tab => tab.classList.add('hidden'));
+            
+            // Mostrar la pestaña correspondiente
+            const activeTab = document.getElementById('tab-' + tabName);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('fade-in');
+            }
+            
+            // Cambiar botón activo
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target && event.target.classList) {
+                event.target.classList.add('active');
+            }
+
+            // Efecto máquina de escribir para LinkedIn y Email
+            if (tabName === 'linkedin') {
+                const wrapper = document.getElementById('linkedin-content-wrapper');
+                typeWriter(wrapper, originalTabContents['linkedin'], 1, (progress) => {
+                    const qr = document.getElementById('qr-image');
+                    if (qr) {
+                        // Revelar de arriba a abajo progresivamente
+                        qr.style.clipPath = `inset(0 0 ${100 - (progress * 100)}% 0)`;
+                    }
+                });
+            } else if (tabName === 'email') {
+                const wrapper = document.getElementById('email-content-wrapper');
+                typeWriter(wrapper, originalTabContents['email'], 1);
+            }
+        }
+
+        let typeWriterInterval;
+
+        function typeWriter(element, htmlContent, speed = 3, onProgress = null) {
+            // Ponemos el HTML de golpe para no romper la estructura de las etiquetas
+            element.innerHTML = htmlContent;
+            
+            // Recorremos todos los nodos de texto dentro del elemento
+            let walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+            let textNodes = [];
+            let totalChars = 0;
+
+            while (walker.nextNode()) {
+                // Ignore whitespace-only nodes to avoid slowing down the typing effect
+                if (walker.currentNode.nodeValue.trim() !== '') {
+                    textNodes.push(walker.currentNode);
+                }
+            }
+            
+            // Guardamos el texto original y vaciamos los nodos visualmente
+            let originalTexts = textNodes.map(node => {
+                let text = node.nodeValue;
+                totalChars += text.length;
+                node.nodeValue = '';
+                return text;
+            });
+
+            if (typeWriterInterval) clearInterval(typeWriterInterval);
+
+            let nodeIndex = 0;
+            let charIndex = 0;
+            let typedChars = 0;
+
+            // Rellenamos caracter a caracter
+            typeWriterInterval = setInterval(() => {
+                if (nodeIndex < textNodes.length) {
+                    let node = textNodes[nodeIndex];
+                    let text = originalTexts[nodeIndex];
+                    
+                    if (!text) {
+                        nodeIndex++;
+                        return;
+                    }
+
+                    node.nodeValue += text.charAt(charIndex);
+                    charIndex++;
+                    typedChars++;
+
+                    if (onProgress) {
+                        onProgress(typedChars / totalChars);
+                    }
+                    
+                    if (charIndex >= text.length) {
+                        nodeIndex++;
+                        charIndex = 0;
+                    }
+                } else {
+                    if (onProgress) onProgress(1); // Asegurar que llega al 100%
+                    clearInterval(typeWriterInterval);
+                }
+            }, speed);
+        }
+
+        // EFECTO DE INTERFERENCIA Y CAMBIO DE PANTALLA
+        function triggerGlitch(seccion) {
+            playPipBoySound();
+            const interactiveZone = document.getElementById('stats-interactive-zone');
+            const dataDisplay = document.getElementById('stats-data-display');
+            const detailedText = document.getElementById('stats-detailed-text');
+
+            interactiveZone.classList.add('glitch-effect');
+
+            setTimeout(() => {
+                interactiveZone.classList.add('hidden');
+                interactiveZone.classList.remove('glitch-effect');
+
+                let newContent = '';
+
+                if (seccion === 'perfil') {
+                    newContent = `<h2>&gt; PERFIL PROFESIONAL</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ DESCRIPCIÓN ]</strong>
+    Desarrolladora FullStack con experiencia en el desarrollo de aplicaciones móviles multiplataforma enfocadas al turismo cultural. Especializada en arquitecturas Cloud, internacionalización de contenido e integración de IA.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ TECNOLOGÍAS ]</strong>
+    Flutter, Firebase, Node.js.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ APTITUDES ]</strong>
+    Alta capacidad de adaptación, resolución de problemas complejos bajo metodologías ágiles y un enfoque proactivo orientado a la calidad del software.
+</p>`;
+                } else if (seccion === 'estudios') {
+                    newContent = `<h2>&gt; REGISTROS ACADÉMICOS</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ 2024 - 2026 ] TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES MULTIPLATAFORMA</strong>
+    INSTITUCIÓN: Davante MEDAC<br>
+    &gt; Ciclo completo de desarrollo de aplicaciones nativas, híbridas y Progresivas (PWA).<br>
+    &gt; Arquitectura e implementación de backend, integración de APIs RESTful y gestión de bases de datos SQL/NoSQL.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2019 - 2020 ] BACHILLERATO DE CIENCIAS SOCIALES</strong>
+    INSTITUCIÓN: IES Luis Bueno Crespo
+</p>`;
+                } else if (seccion === 'experiencia') {
+                    newContent = `<h2>&gt; HISTORIAL DE OPERACIONES</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ MAR 2026 - JUN 2026 ] DESARROLLADORA MULTIPLATAFORMA (PRÁCTICAS)</strong>
+    ORGANIZACIÓN: Engranajes Ciencia<br>
+    &gt; <strong>Data & Cloud:</strong> Diseño/migración a Cloud Firestore y Storage con Security Rules.<br>
+    &gt; <strong>Backend:</strong> Soporte multiidioma (JSON) y endpoints asíncronos con Python (FastAPI/Antigravity).<br>
+    &gt; <strong>DevOps/Mobile:</strong> SDK RevenueCat, compilación APK, gestión Play Store.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2023 - ACTUALIDAD ] AYUDANTE DE COCINA</strong>
+    ORGANIZACIÓN: La Muga<br>
+    &gt; Gestión de operaciones críticas bajo entornos de alta presión.<br>
+    &gt; Optimización de recursos, organización meticulosa y sincronización de tareas en equipo.
+</p>`;
+                } else if (seccion === 'habilidades') {
+                    newContent = `<h2>&gt; ESPECIFICACIONES TÉCNICAS (PERKS)</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ FRONTEND Y MÓVIL ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Dart (Flutter), JavaScript.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ BACKEND ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Python (FastAPI), Node.js, Java.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ CLOUD Y BBDD ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; SQL, Firebase (Firestore, Storage, Auth).</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ DEVOPS E INFRA ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ IDIOMAS ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Inglés (B2).</span>
+</p>`;
+                }
+
+                dataDisplay.classList.remove('hidden');
+                dataDisplay.classList.add('fade-in');
+                
+                typeWriter(detailedText, newContent);
+            }, 400);
+        }
+
+        // BOTÓN PARA VOLVER ATRÁS
+        function backToStatsMenu() {
+            playPipBoySound();
+            if (typeWriterInterval) clearInterval(typeWriterInterval); // Para que no siga escribiendo en segundo plano
+            
+            const interactiveZone = document.getElementById('stats-interactive-zone');
+            const dataDisplay = document.getElementById('stats-data-display');
+
+            dataDisplay.classList.add('hidden');
+            interactiveZone.classList.remove('hidden');
+            interactiveZone.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>

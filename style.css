@@ -1,0 +1,437 @@
+/* CONFIGURACIÓN GENERAL RETRO */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+}
+
+body {
+    background-color: #050d06; /* Fondo negro verdoso muy oscuro */
+    color: #1aff1a; /* Verde fósforo brillante */
+    text-shadow: 0 0 5px rgba(26, 255, 26, 0.7);
+    height: 100vh;
+}
+
+/* EFECTO CRT (LÍNEAS DE MONITOR) */
+.crt-lines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* PANTALLA DE LA PUERTA DEL REFUGIO */
+#vault-door-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #020502;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: opacity 0.5s ease;
+}
+
+.door-container {
+    text-align: center;
+}
+
+/* Estilo CSS simulando la puerta del engranaje */
+.vault-door {
+    width: 250px;
+    height: 250px;
+    border: 15px dashed #1aff1a;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 30px auto;
+    box-shadow: 0 0 15px rgba(26, 255, 26, 0.5);
+    transition: transform 1s ease-in;
+}
+
+.door-center {
+    font-size: 3.5rem;
+    font-weight: bold;
+    border: 5px solid #1aff1a;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.door-prompt {
+    font-size: 1.5rem;
+    animation: blink 1.5s infinite;
+}
+
+/* ANIMACIÓN DE APERTURA (Gira y se encoge hacia el fondo) */
+.open-animation {
+    animation: doorCollapse 1.2s forwards ease-in;
+}
+
+.open-animation .vault-door {
+    transform: rotate(360deg);
+}
+
+@keyframes doorCollapse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(0); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* INTERFAZ DEL PIP-BOY */
+#pipboy-interface {
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeInEffect 0.5s forwards;
+}
+
+@keyframes fadeInEffect {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* CABECERA Y MENÚS */
+.pipboy-header {
+    border-bottom: 2px solid #1aff1a;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 1.8rem;
+}
+
+.header-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.layout-container {
+    display: flex;
+    gap: 40px;
+    height: 100%;
+}
+
+.side-menu {
+    width: 350px;
+    min-width: 350px; /* Evita que se encoja el panel izquierdo */
+    flex-shrink: 0;   /* Fuerza a flexbox a respetar el tamaño */
+    border-right: 2px dashed rgba(26, 255, 26, 0.3);
+    padding-right: 20px;
+}
+
+.welcome-text {
+    font-size: 1.4rem;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #1aff1a;
+    padding-bottom: 10px;
+}
+
+.pipboy-nav-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Mucho espacio para el Vault Boy */
+    margin-left: 20px;
+    padding-left: 10px; /* Ligero padding izquierdo para separar del borde */
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: #1aff1a;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 5px 15px;
+    text-align: left;
+    width: fit-content;
+    /* Transición eliminada para efecto CRT clásico instantáneo */
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background-color: #1aff1a;
+    color: #050d06;
+    text-shadow: none;
+    font-weight: bold;
+}
+
+.pipboy-content {
+    flex-grow: 1;
+    border: 2px solid #1aff1a;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: rgba(26, 255, 26, 0.02);
+    display: flex;
+    flex-direction: column;
+}
+
+.content-display {
+    flex-grow: 1;
+    padding: 20px 20px 20px 40px; /* Mayor separación de la línea divisoria izquierda */
+    overflow-y: auto; /* Si el texto es muy largo, permite scroll en la parte derecha sin descuadrar el resto */
+    overflow-x: hidden;
+}
+
+.main-tab-content {
+    height: 100%;
+}
+
+/* DISEÑO GRID EN ENTORNO STATS */
+.stats-grid-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%; /* Se adapta a la altura completa del contenedor padre */
+    min-height: 100%;
+    width: 100%;
+}
+
+.stats-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 60px; /* Aumentado el espaciado vertical entre botones */
+    width: 30%;
+    height: 100%;
+}
+
+.stats-center {
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.vaultboy-central-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.vaultboy-central-container img {
+    height: 250px;
+    image-rendering: pixelated;
+    /* Filtro agresivo para eliminar el gris y mezclarlo como verde fósforo con el fondo */
+    filter: grayscale(100%) contrast(3) brightness(0.6) sepia(100%) hue-rotate(70deg) saturate(600%);
+    mix-blend-mode: screen; 
+}
+
+/* BOTONES ESTILO PANEL */
+.stats-panel-btn {
+    background: rgba(26, 255, 26, 0.03);
+    border: 2px solid #1aff1a;
+    color: #1aff1a;
+    padding: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-align: center;
+    /* Eliminadas sombras suaves y transiciones para el efecto analógico instántaneo */
+}
+
+.stats-panel-btn:hover {
+    background: #1aff1a;
+    color: #050d06;
+    text-shadow: none;
+    font-weight: bold;
+}
+
+/* PANTALLA DE TEXTO DETALLADO */
+#stats-data-display {
+    padding: 20px;
+    height: 100%;
+}
+
+#stats-detailed-text h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #1aff1a;
+    padding-bottom: 5px;
+}
+
+#stats-detailed-text p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #1aff1a;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 30px;
+    text-decoration: underline;
+}
+
+/* ANIMACIÓN DE INTERFERENCIA (GLITCH) */
+.glitch-effect {
+    animation: terminalInterference 0.4s steps(2) infinite;
+}
+
+@keyframes terminalInterference {
+    0% { opacity: 1; transform: skew(0deg); filter: invert(0); }
+    25% { opacity: 0.3; transform: skew(3deg); }
+    50% { opacity: 1; transform: skew(-2deg); filter: invert(0.1); }
+    75% { opacity: 0.1; transform: translateY(2px); }
+    100% { opacity: 1; transform: skew(0deg); }
+}
+
+/* DISEÑO DE LINKEDIN */
+.linkedin-layout {
+    display: flex;
+    flex-wrap: wrap; /* Para responsive, se apila si la pantalla es pequeña */
+    gap: 40px;
+    height: 100%;
+    align-items: flex-start; /* Alineación superior como en stats */
+}
+
+.linkedin-text-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.linkedin-text-column h2 {
+    font-size: 2rem;
+}
+
+.linkedin-text-column p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+.linkedin-qr-column {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aseguramos que inicie arriba dentro de su margen */
+    margin-top: 85px; /* Empuja el contenedor hacia abajo para alinear con PROTOCOLO DE ACCESO */
+}
+
+.terminal-link {
+    color: #1aff1a;
+    text-decoration: none;
+    border-bottom: 1px dashed #1aff1a;
+    padding: 2px 5px;
+    font-weight: bold;
+}
+
+.terminal-link:hover {
+    background-color: #1aff1a;
+    color: #050d06;
+    text-shadow: none;
+}
+
+.qr-container {
+    border: 2px dashed #1aff1a;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(26, 255, 26, 0.02);
+    box-shadow: inset 0 0 10px rgba(26, 255, 26, 0.1);
+}
+
+.qr-label {
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #1aff1a;
+    padding-bottom: 5px;
+}
+
+/* DISEÑO DE EMAIL */
+.email-layout {
+    display: flex;
+    flex-wrap: wrap; /* Responsive */
+    gap: 40px;
+    height: 100%;
+    align-items: flex-start; /* Alineado arriba */
+}
+
+.email-text-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.email-text-column h2 {
+    font-size: 2rem;
+}
+
+.email-text-column p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+.email-hacking-column {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 85px; /* Empuja el contenedor hacia abajo para alinear visualmente */
+}
+
+.hacking-container {
+    padding: 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(26, 255, 26, 0.02);
+    border: 1px solid rgba(26, 255, 26, 0.3);
+    box-shadow: inset 0 0 15px rgba(26, 255, 26, 0.05);
+    width: 100%;
+}
+
+.hacking-label {
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #1aff1a;
+    border-bottom: 1px dashed rgba(26, 255, 26, 0.5);
+    padding-bottom: 5px;
+    animation: blink 2.5s infinite; /* Efecto de parpadeo suave */
+}
+
+.hacking-code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.qr-image {
+    width: 200px;
+    height: 200px;
+    /* Invertimos y coloreamos el SVG para que parezca verde sobre negro, y le damos sombra CRT */
+    filter: invert(0.8) sepia(1) saturate(50) hue-rotate(70deg) drop-shadow(0 0 5px rgba(26, 255, 26, 0.5));
+}
