@@ -549,10 +549,17 @@ body.gate-mode .drop-zone {
     animation: fadeIn 0.3s ease-out;
 }
 .tutorial-highlight {
-    position: relative; z-index: 10001 !important;
-    box-shadow: 0 0 0 4px #e94560, 0 0 20px #e94560 !important;
+    position: absolute !important; 
+    z-index: 10005 !important;
+    box-shadow: 0 0 0 4px #e94560, 0 0 30px 10px rgba(233, 69, 96, 0.8) !important;
     pointer-events: none !important;
     border-radius: 12px;
+    animation: pulseTut 1.5s infinite;
+}
+@keyframes pulseTut {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 /* CORNER BG TOGGLE BUTTON */

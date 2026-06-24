@@ -74,17 +74,35 @@ function startTutorial() {
 }
 
 function showTutorialStep(step) {
-    if (step > 0 && step <= tutorialSteps.length) {
-        document.getElementById(tutorialSteps[step-1].target).classList.remove('tutorial-highlight');
-    }
+    const oldClone = document.getElementById('tut-clone');
+    if (oldClone) oldClone.remove();
+
     if (step >= tutorialSteps.length) {
         document.getElementById('tutorial-overlay').classList.add('hidden');
         localStorage.setItem('tutorialDone', 'true');
         return;
     }
+    
     tutorialStep = step;
     const current = tutorialSteps[step];
-    document.getElementById(current.target).classList.add('tutorial-highlight');
+    const targetEl = document.getElementById(current.target);
+    
+    // Clonar elemento para que se vea nítido por encima del desenfoque
+    if (targetEl) {
+        const rect = targetEl.getBoundingClientRect();
+        const clone = targetEl.cloneNode(true);
+        clone.id = 'tut-clone';
+        clone.style.position = 'fixed';
+        clone.style.left = rect.left + 'px';
+        clone.style.top = rect.top + 'px';
+        clone.style.width = rect.width + 'px';
+        clone.style.height = rect.height + 'px';
+        clone.style.margin = '0';
+        clone.style.zIndex = '10005';
+        clone.classList.add('tutorial-highlight');
+        document.getElementById('tutorial-overlay').appendChild(clone);
+    }
+
     document.getElementById('tut-title').textContent = current.title;
     document.getElementById('tut-text').textContent = current.text;
 }
