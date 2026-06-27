@@ -17,16 +17,6 @@ Bienvenido al terminal. Este repositorio contiene el código fuente de mi portfo
   * `LINKEDIN`: Acceso a la red profesional de la "Hermandad" a través de un código QR renderizado en el terminal.
   * `EMAIL`: Interfaz de comunicación simulada para establecer contacto directo.
 
-## 🛠️ Instalación y Uso Local
-Para iniciar este terminal en tu propia máquina de forma local:
-
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
-   ```
-2. Accede a la carpeta del proyecto.
-3. Abre el archivo `index.html` en cualquier navegador web moderno (no es estrictamente necesario un servidor local, aunque es recomendado para evitar problemas de CORS si se añaden recursos externos).
-
 ## 📡 Estado del Sistema
 > **System Log:** Inicialización del sistema completada. Todos los sistemas nominales. Algunos sectores pueden encontrarse catalogados como *Work in Progress*.
 
