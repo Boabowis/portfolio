@@ -652,6 +652,28 @@ body {
     animation: sunSpin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* BOTÓN DE IDIOMA */
+#lang-toggle {
+    background: transparent;
+    border: 1px solid var(--pipboy-color);
+    color: var(--pipboy-color);
+    padding: 4px 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: var(--pipboy-shadow);
+    transition: background-color 0.2s, color 0.2s, border-color 0.5s;
+    outline: none;
+    font-family: 'Share Tech Mono', monospace;
+    box-shadow: none;
+}
+
+#lang-toggle:hover {
+    background-color: var(--pipboy-color);
+    color: var(--pipboy-bg);
+    text-shadow: none;
+}
+
 @keyframes sunSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(720deg); }

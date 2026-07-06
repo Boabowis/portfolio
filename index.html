@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault-Tec OS v101</title>
-    <link rel="stylesheet" href="style.css?v=2.0">
+    <link rel="stylesheet" href="style.css?v=2.1">
 </head>
 <body>
 
@@ -15,15 +15,19 @@
             <div class="vault-door">
                 <div class="door-center">101</div>
             </div>
-            <p class="door-prompt">HAGA CLIC PARA ABRIR EL REFUGIO</p>
+            <p class="door-prompt" data-i18n="doorPrompt">HAGA CLIC PARA ABRIR EL REFUGIO</p>
         </div>
     </div>
 
     <div id="pipboy-interface" class="hidden">
         <header class="pipboy-header">
-            <div class="header-title">VAULT-TEC OS v1.0</div>
+            <div class="header-title" data-i18n="headerTitle">VAULT-TEC OS v1.0</div>
             <div style="display: flex; align-items: center; gap: 20px;">
-                <div class="header-name">USUARIO: ALBA HOCES</div>
+                <div class="header-name" data-i18n="headerUser">USUARIO: ALBA HOCES</div>
+                <!-- Botón de Idioma (ES / EN) -->
+                <button id="lang-toggle" onclick="toggleLanguage()" title="Cambiar idioma / Change language">
+                    [ ES ]
+                </button>
                 <!-- Botón de Sol para cambio de tema -->
                 <button id="theme-toggle" class="theme-sun-btn" onclick="toggleTheme()" title="Cambiar color del Pip-Boy" style="background: none; border: none; padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--pipboy-color); outline: none; box-shadow: none;">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
@@ -36,13 +40,13 @@
         <main class="pipboy-content">
             <div class="layout-container">
                 <aside class="side-menu">
-                    <h2 class="welcome-text">BIENVENIDO AL TERMINAL 101</h2>
+                    <h2 class="welcome-text" data-i18n="welcomeText">BIENVENIDO AL TERMINAL 101</h2>
                     <nav class="pipboy-nav-vertical">
-                        <button class="nav-btn" onclick="changeTab('stats')">[ STATS ]</button>
-                        <button class="nav-btn" onclick="changeTab('proyectos')">[ PROYECTOS ]</button>
-                        <button class="nav-btn" onclick="changeTab('github')">[ GITHUB ]</button>
-                        <button class="nav-btn" onclick="changeTab('linkedin')">[ LINKEDIN ]</button>
-                        <button class="nav-btn" onclick="changeTab('email')">[ EMAIL ]</button>
+                        <button class="nav-btn" onclick="changeTab('stats')" data-i18n="navStats">[ STATS ]</button>
+                        <button class="nav-btn" onclick="changeTab('proyectos')" data-i18n="navProyectos">[ PROYECTOS ]</button>
+                        <button class="nav-btn" onclick="changeTab('github')" data-i18n="navGithub">[ GITHUB ]</button>
+                        <button class="nav-btn" onclick="changeTab('linkedin')" data-i18n="navLinkedin">[ LINKEDIN ]</button>
+                        <button class="nav-btn" onclick="changeTab('email')" data-i18n="navEmail">[ EMAIL ]</button>
                     </nav>
 
                     <!-- REPRODUCTOR DE RADIO RETRO -->
@@ -82,17 +86,17 @@
                             <img src="foto-alba.jpg" alt="Foto de Alba" class="pipboy-photo" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 2;">
                             <span style="position: absolute; font-size: 1rem; z-index: 1;">[ FOTO ]</span>
                         </div>
-                        <h2 style="font-size: 2.5rem; margin-bottom: 15px;">HOLA, SOY ALBA HOCES</h2>
-                        <p style="font-size: 1.5rem; margin-bottom: 40px; text-shadow: none; color: var(--pipboy-alpha-80); transition: color 0.5s ease;">Bienvenido a mi portfolio personal en el Terminal 101.</p>
-                        <p style="font-size: 1.2rem; color: var(--pipboy-color); animation: blink 1.5s infinite;">> SELECCIONE UNA OPCIÓN DEL MENÚ PARA COMENZAR_</p>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 15px;" data-i18n="hello">HOLA, SOY ALBA HOCES</h2>
+                        <p style="font-size: 1.5rem; margin-bottom: 40px; text-shadow: none; color: var(--pipboy-alpha-80); transition: color 0.5s ease;" data-i18n="welcomeSub">Bienvenido a mi portfolio personal en el Terminal 101.</p>
+                        <p style="font-size: 1.2rem; color: var(--pipboy-color); animation: blink 1.5s infinite;" data-i18n="selectOption">> SELECCIONE UNA OPCIÓN DEL MENÚ PARA COMENZAR_</p>
                     </div>
 
                     <!-- CONTENIDO DE STATS -->
                     <div id="tab-stats" class="main-tab-content hidden">
                         <div id="stats-interactive-zone" class="stats-grid-layout">
                             <div class="stats-column left-side">
-                                <button class="stats-panel-btn" onclick="triggerGlitch('perfil')">[ PERFIL PROFESIONAL ]</button>
-                                <button class="stats-panel-btn" onclick="triggerGlitch('estudios')">[ ESTUDIOS ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('perfil')" data-i18n="btnPerfil">[ PERFIL PROFESIONAL ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('estudios')" data-i18n="btnEstudios">[ ESTUDIOS ]</button>
                             </div>
 
                             <div class="stats-center">
@@ -102,13 +106,13 @@
                             </div>
 
                             <div class="stats-column right-side">
-                                <button class="stats-panel-btn" onclick="triggerGlitch('experiencia')">[ EXPERIENCIA ]</button>
-                                <button class="stats-panel-btn" onclick="triggerGlitch('habilidades')">[ HABILIDADES ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('experiencia')" data-i18n="btnExperiencia">[ EXPERIENCIA ]</button>
+                                <button class="stats-panel-btn" onclick="triggerGlitch('habilidades')" data-i18n="btnHabilidades">[ HABILIDADES ]</button>
                             </div>
                         </div>
 
                         <div id="stats-data-display" class="hidden">
-                            <button class="back-btn" onclick="backToStatsMenu()">[ &lt;&lt; VOLVER AL MENÚ STATS ]</button>
+                            <button class="back-btn" onclick="backToStatsMenu()" data-i18n="btnVolverStats">[ &lt;&lt; VOLVER AL MENÚ STATS ]</button>
                             <div id="stats-detailed-text"></div>
                         </div>
                     </div>
@@ -116,35 +120,35 @@
                     <!-- CONTENIDO DE PROYECTOS -->
                     <div id="tab-proyectos" class="main-tab-content hidden">
                         <div class="projects-layout" style="padding: 20px; text-align: left; width: 100%; box-sizing: border-box;">
-                            <h2 style="margin-bottom: 20px;">&gt; ARCHIVOS DE PROYECTOS DESENCRIPTADOS</h2>
+                            <h2 style="margin-bottom: 20px;" id="proj-heading" data-i18n="projHeading">&gt; ARCHIVOS DE PROYECTOS DESENCRIPTADOS</h2>
                             <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 30px;">
                             
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; align-items: start;">
                                 <!-- TARJETA 1: PUZZLE INTERACTIVO -->
                                 <div style="border: 1px solid var(--pipboy-color); padding: 20px; background: var(--pipboy-alpha-05); border-radius: 4px; box-shadow: 0 0 10px var(--pipboy-alpha-02); display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
                                     <div>
-                                        <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--pipboy-color); text-shadow: 0 0 5px var(--pipboy-alpha-50);">[ PUZZLE INTERACTIVO ]</h3>
+                                        <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--pipboy-color); text-shadow: 0 0 5px var(--pipboy-alpha-50);" data-i18n="proj1Title">[ PUZZLE INTERACTIVO ]</h3>
                                         <div style="width: 100%; height: 160px; border: 1px solid var(--pipboy-alpha-03); margin-bottom: 15px; overflow: hidden; position: relative; background: #000;">
                                             <img src="puzzle-game/assets/img2.gif" alt="Simulación Puzzle" class="pipboy-photo" style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
-                                        <p style="margin-bottom: 25px; line-height: 1.5; font-size: 0.95rem; color: var(--pipboy-color);">Simulador visual de montaje con físicas y eventos dinámicos integrados. Desarrollado con Vanilla JS, CSS3, animaciones fluidas y Drag&Drop nativo.</p>
+                                        <p style="margin-bottom: 25px; line-height: 1.5; font-size: 0.95rem; color: var(--pipboy-color);" data-i18n="proj1Desc">Simulador visual de montaje con físicas y eventos dinámicos integrados. Desarrollado con Vanilla JS, CSS3, animaciones fluidas y Drag&Drop nativo.</p>
                                     </div>
                                     <div>
-                                        <a href="puzzle-game/index.html" target="_blank" style="display: inline-block; padding: 8px 16px; border: 2px solid var(--pipboy-color); color: var(--pipboy-bg); background-color: var(--pipboy-color); font-weight: bold; text-decoration: none; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px var(--pipboy-alpha-50);">&gt; INICIAR_SIMULACION.EXE</a>
+                                        <a href="puzzle-game/index.html" target="_blank" style="display: inline-block; padding: 8px 16px; border: 2px solid var(--pipboy-color); color: var(--pipboy-bg); background-color: var(--pipboy-color); font-weight: bold; text-decoration: none; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px var(--pipboy-alpha-50);" data-i18n="proj1Btn">&gt; INICIAR_SIMULACION.EXE</a>
                                     </div>
                                 </div>
 
                                 <!-- TARJETA 2: ARQUITECTURA APP TURISMO -->
                                 <div style="border: 1px solid var(--pipboy-color); padding: 20px; background: var(--pipboy-alpha-05); border-radius: 4px; box-shadow: 0 0 10px var(--pipboy-alpha-02); display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
                                     <div>
-                                        <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--pipboy-color); text-shadow: 0 0 5px var(--pipboy-alpha-50);">[ ARQUITECTURA: APP TURÍSTICA ]</h3>
+                                        <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--pipboy-color); text-shadow: 0 0 5px var(--pipboy-alpha-50);" data-i18n="proj2Title">[ ARQUITECTURA: APP TURÍSTICA ]</h3>
                                         <div style="width: 100%; height: 160px; border: 1px solid var(--pipboy-alpha-03); margin-bottom: 15px; overflow: hidden; position: relative; background: #000;">
                                             <img src="mockup_turismo.png" alt="Concepto UI Turismo" class="pipboy-photo" style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
-                                        <p style="margin-bottom: 25px; line-height: 1.5; font-size: 0.95rem; color: var(--pipboy-color);">Diseño de arquitectura híbrida (Firestore + Storage) y optimización de costes Cloud para sistema multiidioma con audioguías generadas por Inteligencia Artificial.</p>
+                                        <p style="margin-bottom: 25px; line-height: 1.5; font-size: 0.95rem; color: var(--pipboy-color);" data-i18n="proj2Desc">Diseño de arquitectura híbrida (Firestore + Storage) y optimización de costes Cloud para sistema multiidioma con audioguías generadas por Inteligencia Artificial.</p>
                                     </div>
                                     <div>
-                                        <a href="https://github.com/Boabowis/portfolio/blob/master/case_study_turismo.md" target="_blank" style="display: inline-block; padding: 8px 16px; border: 2px solid var(--pipboy-color); color: var(--pipboy-bg); background-color: var(--pipboy-color); font-weight: bold; text-decoration: none; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px var(--pipboy-alpha-50);">&gt; VER_ESTUDIO_ARQUITECTURA.DOC</a>
+                                        <a href="https://github.com/Boabowis/portfolio/blob/master/case_study_turismo.md" target="_blank" style="display: inline-block; padding: 8px 16px; border: 2px solid var(--pipboy-color); color: var(--pipboy-bg); background-color: var(--pipboy-color); font-weight: bold; text-decoration: none; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px var(--pipboy-alpha-50);" data-i18n="proj2Btn">&gt; VER_ESTUDIO_ARQUITECTURA.DOC</a>
                                     </div>
                                 </div>
                             </div>
@@ -281,6 +285,448 @@
         let audioCtx;
         let originalTabContents = {};
 
+        // TRADUCCIONES E INTERNACIONALIZACIÓN (i18n)
+        const translations = {
+            es: {
+                title: "Vault-Tec OS v101",
+                doorPrompt: "HAGA CLIC PARA ABRIR EL REFUGIO",
+                headerTitle: "VAULT-TEC OS v1.0",
+                headerUser: "USUARIO: ALBA HOCES",
+                welcomeText: "BIENVENIDO AL TERMINAL 101",
+                navStats: "[ STATS ]",
+                navProyectos: "[ PROYECTOS ]",
+                navGithub: "[ GITHUB ]",
+                navLinkedin: "[ LINKEDIN ]",
+                navEmail: "[ EMAIL ]",
+                
+                // Inicio
+                hello: "HOLA, SOY ALBA HOCES",
+                welcomeSub: "Bienvenido a mi portfolio personal en el Terminal 101.",
+                selectOption: "> SELECCIONE UNA OPCIÓN DEL MENÚ PARA COMENZAR_",
+                
+                // Botones Stats
+                btnPerfil: "[ PERFIL PROFESIONAL ]",
+                btnEstudios: "[ ESTUDIOS ]",
+                btnExperiencia: "[ EXPERIENCIA ]",
+                btnHabilidades: "[ HABILIDADES ]",
+                btnVolverStats: "[ << VOLVER AL MENÚ STATS ]",
+                
+                // Contenido Stats
+                statsPerfil: `<h2>&gt; PERFIL PROFESIONAL</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ DESCRIPCIÓN ]</strong>
+    Desarrolladora FullStack con experiencia en el desarrollo de aplicaciones móviles multiplataforma enfocadas al turismo cultural. Especializada en arquitecturas Cloud, internacionalización de contenido e integración de IA.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ TECNOLOGÍAS ]</strong>
+    Flutter, Firebase, Node.js.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ APTITUDES ]</strong>
+    Alta capacidad de adaptación, resolución de problemas complejos bajo metodologías ágiles y un enfoque proactivo orientado a la calidad del software.
+</p>`,
+                statsEstudios: `<h2>&gt; REGISTROS ACADÉMICOS</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ 2024 - 2026 ] TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES MULTIPLATAFORMA</strong>
+    INSTITUCIÓN: Davante MEDAC<br>
+    &gt; Ciclo completo de desarrollo de aplicaciones nativas, híbridas y Progresivas (PWA).<br>
+    &gt; Arquitectura e implementación de backend, integración de APIs RESTful y gestión de bases de datos SQL/NoSQL.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2019 - 2020 ] BACHILLERATO DE CIENCIAS SOCIALES</strong>
+    INSTITUCIÓN: IES Luis Bueno Crespo
+</p>`,
+                statsExperiencia: `<h2>&gt; HISTORIAL DE OPERACIONES</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ MAR 2026 - JUN 2026 ] DESARROLLADORA MULTIPLATAFORMA (PRÁCTICAS)</strong>
+    ORGANIZACIÓN: Engranajes Ciencia<br>
+    &gt; <strong>Data & Cloud:</strong> Diseño/migración a Cloud Firestore y Storage con Security Rules.<br>
+    &gt; <strong>Backend:</strong> Soporte multiidioma (JSON) y endpoints asíncronos con Python (FastAPI/Antigravity).<br>
+    &gt; <strong>DevOps/Mobile:</strong> SDK RevenueCat, compilación APK, gestión Play Store.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2023 - ACTUALIDAD ] AYUDANTE DE COCINA</strong>
+    ORGANIZACIÓN: La Muga<br>
+    &gt; Gestión de operaciones críticas bajo entornos de alta presión.<br>
+    &gt; Optimización de recursos, organización meticulosa y sincronización de tareas en equipo.
+</p>`,
+                statsHabilidades: `<h2>&gt; ESPECIFICACIONES TÉCNICAS (PERKS)</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ FRONTEND Y MÓVIL ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Dart (Flutter), JavaScript.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ BACKEND ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Python (FastAPI), Node.js, Java.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ CLOUD Y BBDD ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; SQL, Firebase (Firestore, Storage, Auth).</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ DEVOPS E INFRA ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ IDIOMAS ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Inglés (B2).</span>
+</p>`,
+                
+                // Proyectos
+                projHeading: "&gt; ARCHIVOS DE PROYECTOS DESENCRIPTADOS",
+                proj1Title: "[ PUZZLE INTERACTIVO ]",
+                proj1Desc: "Simulador visual de montaje con físicas y eventos dinámicos integrados. Desarrollado con Vanilla JS, CSS3, animaciones fluidas y Drag&Drop nativo.",
+                proj1Btn: "&gt; INICIAR_SIMULACION.EXE",
+                proj2Title: "[ ARQUITECTURA: APP TURÍSTICA ]",
+                proj2Desc: "Diseño de arquitectura híbrida (Firestore + Storage) y optimización de costes Cloud para sistema multiidioma con audioguías generadas por Inteligencia Artificial.",
+                proj2Btn: "&gt; VER_ESTUDIO_ARQUITECTURA.DOC",
+                
+                // Contenido dinámico Typewriter
+                githubContent: `
+                            <div class="github-text-column">
+                                <h2>&gt; RED DE ALMACENAMIENTO DE CÓDIGO (GITHUB)</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Enlace externo establecido con el servidor remoto.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ MÓDULO DE ACCESO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Ejecuta la transmisión para sincronizar los repositorios, clonar el código fuente y auditar los scripts del sistema central.</span>
+                                    
+                                    &gt; REPOSITORIO RAÍZ: <a href="https://github.com/Boabowis" target="_blank" class="terminal-link">https://github.com/Boabowis</a>
+                                </p>
+                            </div>
+                            <div class="github-terminal-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ CONEXIÓN_ESTABLECIDA ]</span>
+                                    <div class="hacking-code" style="font-size: 0.95rem; line-height: 1.4;">
+                                        &gt; ping github.com<br>
+                                        [140.82.121.4] t=12ms<br>
+                                        &gt; git clone portfolio.git<br>
+                                        Cloning 'portfolio'...<br>
+                                        Objects: 100% (124/124)<br>
+                                        Resolving deltas: 100%<br>
+                                        &gt; git status<br>
+                                        Branch 'master' up-to-date.<br>
+                                        &gt; ready_
+                                    </div>
+                                </div>
+                            </div>`,
+                linkedinContent: `
+                            <div class="linkedin-text-column">
+                                <h2>&gt; ENLACE DE RED EXTERNA (LINKEDIN)</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Conexión lista para vinculación externa.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ PROTOCOLO DE ACCESO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Haz clic en el enlace inferior para abrir el perfil profesional en una nueva terminal o escanea el código de espectro de la derecha.</span>
+                                    
+                                    &gt; ENLACE DIRECTO: <a href="https://www.linkedin.com/in/albahoces/" target="_blank" class="terminal-link">https://www.linkedin.com/in/albahoces/</a>
+                                </p>
+                            </div>
+                            <div class="linkedin-qr-column">
+                                <div class="qr-container">
+                                    <span class="qr-label">[ CÓDIGO QR ]</span>
+                                    <img src="qr-linkedin.svg" alt="LinkedIn QR" class="qr-image" id="qr-image" style="clip-path: inset(100% 0 0 0);">
+                                </div>
+                            </div>`,
+                emailContent: `
+                            <div class="email-text-column">
+                                <h2>&gt; TERMINAL DE COMUNICACIONES ENTRANTE</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Canal de transmisión de datos encriptado y listo.</span>
+                                    
+                                    <form id="contact-form" class="terminal-form">
+                                        <div style="margin-bottom: 15px; border-bottom: 1px dashed var(--pipboy-color); padding-bottom: 10px;">
+                                            &gt; DESTINO: <span style="color: var(--pipboy-color); font-weight: bold; text-shadow: 0 0 5px rgba(var(--pipboy-color-rgb), 0.5);">alba.rubia2@live.com</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sys_name">SYSTEM_USER_NAME &gt;</label>
+                                            <input type="text" id="sys_name" name="sys_name" class="terminal-input" placeholder="[ Introduzca su identificador ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sender_email">SENDER_EMAIL &gt;</label>
+                                            <input type="email" id="sender_email" name="email" class="terminal-input" placeholder="[ Introduzca su dirección de red ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comms_subject">COMMS_SUBJECT &gt;</label>
+                                            <input type="text" id="comms_subject" name="subject" class="terminal-input" placeholder="[ Motivo de la transmisión ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enter_data">ENTER_DATA &gt;&gt;</label>
+                                            <textarea id="enter_data" name="message" class="terminal-input" rows="4" placeholder="[ Procesando entrada de datos... ]" required></textarea>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="terminal-btn">[ TRANSMITIR_DATOS ]</button>
+                                            <button type="reset" class="terminal-btn">[ ABORTAR_CONEXION ]</button>
+                                        </div>
+                                    </form>
+                                    
+                                    <div id="success-tick" class="hidden" style="margin-top: 25px; color: var(--pipboy-color); font-weight: bold; font-size: 1.5rem; text-align: center; border: 1px dashed var(--pipboy-color); padding: 15px; background-color: var(--pipboy-alpha-05); box-shadow: 0 0 10px var(--pipboy-alpha-03);">
+                                        <span style="animation: blink 1s infinite;">[ ✓ ] DATOS TRANSMITIDOS CON ÉXITO</span>
+                                        <p style="font-size: 1rem; font-weight: normal; margin-top: 10px; color: var(--pipboy-alpha-80); animation: none;">Protocolo de enlace cerrado temporalmente.</p>
+                                    </div>
+                                </p>
+                            </div>
+                            <div class="email-hacking-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ SUBPROCESO_DE_CIFRADO ]</span>
+                                    <div class="hacking-code">
+                                        0xEC40 [?] SYSTEM__<br>
+                                        0xEC4C {INIT_MAIL_PROTOCOL}<br>
+                                        0xEC58 %$ ! / * # @ &amp; [LIVE]<br>
+                                        0xEC64 COMMS_ESTABLISHED_
+                                    </div>
+                                </div>
+                            </div>`,
+                
+                // Radio
+                radioOff: "RADIO APAGADA",
+                radioPaused: "RADIO EN PAUSA",
+                radioError: "ERROR DE SINTONÍA",
+                radioRetry: "INTENTE DE NUEVO"
+            },
+            en: {
+                title: "Vault-Tec OS v101",
+                doorPrompt: "CLICK TO OPEN THE VAULT",
+                headerTitle: "VAULT-TEC OS v1.0",
+                headerUser: "USER: ALBA HOCES",
+                welcomeText: "WELCOME TO TERMINAL 101",
+                navStats: "[ STATS ]",
+                navProyectos: "[ PROJECTS ]",
+                navGithub: "[ GITHUB ]",
+                navLinkedin: "[ LINKEDIN ]",
+                navEmail: "[ EMAIL ]",
+                
+                // Inicio
+                hello: "HELLO, I'M ALBA HOCES",
+                welcomeSub: "Welcome to my personal portfolio on Terminal 101.",
+                selectOption: "> SELECT A MENU OPTION TO BEGIN_",
+                
+                // Botones Stats
+                btnPerfil: "[ PROFESSIONAL PROFILE ]",
+                btnEstudios: "[ ACADEMIC RECORD ]",
+                btnExperiencia: "[ OPERATIONS HISTORY ]",
+                btnHabilidades: "[ TECHNICAL SPECS ]",
+                btnVolverStats: "[ << BACK TO STATS MENU ]",
+                
+                // Contenido Stats
+                statsPerfil: `<h2>&gt; PROFESSIONAL PROFILE</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ DESCRIPTION ]</strong>
+    FullStack Developer with experience in cross-platform mobile development focused on cultural tourism. Specialized in Cloud architectures, content internationalization, and AI integration.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ TECH STACK ]</strong>
+    Flutter, Firebase, Node.js.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ SKILLS ]</strong>
+    Highly adaptable, complex problem solving under agile methodologies, and a proactive quality-oriented software approach.
+</p>`,
+                statsEstudios: `<h2>&gt; ACADEMIC RECORD</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ 2024 - 2026 ] HIGHER TECHNICAL DEGREE IN MULTIPLATFORM APPLICATIONS DEVELOPMENT (DAM)</strong>
+    INSTITUTION: Davante MEDAC<br>
+    &gt; Complete development cycle of native, hybrid, and Progressive Web Apps (PWA).<br>
+    &gt; Backend architecture, RESTful API integration, and SQL/NoSQL database management.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2019 - 2020 ] HIGH SCHOOL DEGREE IN SOCIAL SCIENCES</strong>
+    INSTITUTION: IES Luis Bueno Crespo
+</p>`,
+                statsExperiencia: `<h2>&gt; OPERATIONS HISTORY</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ MAR 2026 - JUN 2026 ] MULTIPLATFORM DEVELOPER (INTERNSHIP)</strong>
+    ORGANIZATION: Engranajes Ciencia<br>
+    &gt; <strong>Data & Cloud:</strong> Design and migration to Cloud Firestore and Storage with Security Rules.<br>
+    &gt; <strong>Backend:</strong> Multi-language support (JSON) and asynchronous endpoints using Python (FastAPI/Antigravity).<br>
+    &gt; <strong>DevOps/Mobile:</strong> RevenueCat SDK, APK compilation, Google Play Store release management.<br><br>
+    
+    <strong style="display:block; margin-bottom:5px;">[ 2023 - PRESENT ] ASSISTANT COOK</strong>
+    ORGANIZATION: La Muga<br>
+    &gt; Operations management under high-pressure environments.<br>
+    &gt; Resource optimization, meticulous organization, and teamwork synchronization.
+</p>`,
+                statsHabilidades: `<h2>&gt; TECHNICAL SPECS (PERKS)</h2>
+<p>
+    <strong style="display:block; margin-bottom:5px;">[ FRONTEND & MOBILE ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Dart (Flutter), JavaScript.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ BACKEND ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Python (FastAPI), Node.js, Java.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ CLOUD & DATABASE ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; SQL, Firebase (Firestore, Storage, Auth).</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ DEVOPS & INFRA ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
+    
+    <strong style="display:block; margin-bottom:5px;">[ LANGUAGES ]</strong>
+    <span style="display:block; margin-bottom: 25px;">&gt; English (B2).</span>
+</p>`,
+                
+                // Proyectos
+                projHeading: "&gt; DECRYPTED PROJECT FILES",
+                proj1Title: "[ INTERACTIVE PUZZLE ]",
+                proj1Desc: "Visual assembly simulator with integrated physics and dynamic events. Developed with Vanilla JS, CSS3, smooth animations, and native Drag&Drop.",
+                proj1Btn: "&gt; START_SIMULATION.EXE",
+                proj2Title: "[ ARCHITECTURE: TOURISM APP ]",
+                proj2Desc: "Hybrid architecture design (Firestore + Storage) and Cloud cost optimization for a multi-language system with AI-generated audio guides.",
+                proj2Btn: "&gt; VIEW_ARCH_STUDY.DOC",
+                
+                // Contenido dinámico Typewriter
+                githubContent: `
+                            <div class="github-text-column">
+                                <h2>&gt; CODE STORAGE NETWORK (GITHUB)</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ STATUS ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">External link established with remote server.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ ACCESS MODULE ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Executes transmission to sync repositories, clone source code, and audit central system scripts.</span>
+                                    
+                                    &gt; ROOT REPOSITORY: <a href="https://github.com/Boabowis" target="_blank" class="terminal-link">https://github.com/Boabowis</a>
+                                </p>
+                            </div>
+                            <div class="github-terminal-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ CONNECTION_ESTABLISHED ]</span>
+                                    <div class="hacking-code" style="font-size: 0.95rem; line-height: 1.4;">
+                                        &gt; ping github.com<br>
+                                        [140.82.121.4] t=12ms<br>
+                                        &gt; git clone portfolio.git<br>
+                                        Cloning 'portfolio'...<br>
+                                        Objects: 100% (124/124)<br>
+                                        Resolving deltas: 100%<br>
+                                        &gt; git status<br>
+                                        Branch 'master' up-to-date.<br>
+                                        &gt; ready_
+                                    </div>
+                                </div>
+                            </div>`,
+                linkedinContent: `
+                            <div class="linkedin-text-column">
+                                <h2>&gt; EXTERNAL NETWORK LINK (LINKEDIN)</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ STATUS ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Connection ready for external linking.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ ACCESS PROTOCOL ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Click the link below to open the professional profile in a new terminal or scan the spectrum code on the right.</span>
+                                    
+                                    &gt; DIRECT LINK: <a href="https://www.linkedin.com/in/albahoces/" target="_blank" class="terminal-link">https://www.linkedin.com/in/albahoces/</a>
+                                </p>
+                            </div>
+                            <div class="linkedin-qr-column">
+                                <div class="qr-container">
+                                    <span class="qr-label">[ QR CODE ]</span>
+                                    <img src="qr-linkedin.svg" alt="LinkedIn QR" class="qr-image" id="qr-image" style="clip-path: inset(100% 0 0 0);">
+                                </div>
+                            </div>`,
+                emailContent: `
+                            <div class="email-text-column">
+                                <h2>&gt; INCOMING COMMUNICATIONS TERMINAL</h2>
+                                <hr style="border: 1px dashed var(--pipboy-color); margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ STATUS ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Encrypted data transmission channel ready.</span>
+                                    
+                                    <form id="contact-form" class="terminal-form">
+                                        <div style="margin-bottom: 15px; border-bottom: 1px dashed var(--pipboy-color); padding-bottom: 10px;">
+                                            &gt; DESTINATION: <span style="color: var(--pipboy-color); font-weight: bold; text-shadow: 0 0 5px rgba(var(--pipboy-color-rgb), 0.5);">alba.rubia2@live.com</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sys_name">SYSTEM_USER_NAME &gt;</label>
+                                            <input type="text" id="sys_name" name="sys_name" class="terminal-input" placeholder="[ Enter your identifier ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sender_email">SENDER_EMAIL &gt;</label>
+                                            <input type="email" id="sender_email" name="email" class="terminal-input" placeholder="[ Enter your network address ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comms_subject">COMMS_SUBJECT &gt;</label>
+                                            <input type="text" id="comms_subject" name="subject" class="terminal-input" placeholder="[ Transmission subject ]" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="enter_data">ENTER_DATA &gt;&gt;</label>
+                                            <textarea id="enter_data" name="message" class="terminal-input" rows="4" placeholder="[ Processing data input... ]" required></textarea>
+                                        </div>
+                                        <div class="form-actions">
+                                            <button type="submit" class="terminal-btn">[ TRANSMIT_DATA ]</button>
+                                            <button type="reset" class="terminal-btn">[ ABORT_CONNECTION ]</button>
+                                        </div>
+                                    </form>
+                                    
+                                    <div id="success-tick" class="hidden" style="margin-top: 25px; color: var(--pipboy-color); font-weight: bold; font-size: 1.5rem; text-align: center; border: 1px dashed var(--pipboy-color); padding: 15px; background-color: var(--pipboy-alpha-05); box-shadow: 0 0 10px var(--pipboy-alpha-03);">
+                                        <span style="animation: blink 1s infinite;">[ ✓ ] DATA TRANSMITTED SUCCESSFULLY</span>
+                                        <p style="font-size: 1rem; font-weight: normal; margin-top: 10px; color: var(--pipboy-alpha-80); animation: none;">Handshake protocol temporarily closed.</p>
+                                    </div>
+                                </p>
+                            </div>
+                            <div class="email-hacking-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ ENCRYPTION_SUBPROCESS ]</span>
+                                    <div class="hacking-code">
+                                        0xEC40 [?] SYSTEM__<br>
+                                        0xEC4C {INIT_MAIL_PROTOCOL}<br>
+                                        0xEC58 %$ ! / * # @ &amp; [LIVE]<br>
+                                        0xEC64 COMMS_ESTABLISHED_
+                                    </div>
+                                </div>
+                            </div>`,
+                
+                // Radio
+                radioOff: "RADIO OFF",
+                radioPaused: "RADIO PAUSED",
+                radioError: "TUNING ERROR",
+                radioRetry: "TRY AGAIN"
+            }
+        };
+
+        let currentLang = localStorage.getItem('language') || 'es';
+
+        function applyTranslations() {
+            // Actualizar botón de idioma
+            const langBtn = document.getElementById('lang-toggle');
+            if (langBtn) {
+                langBtn.innerText = `[ ${currentLang.toUpperCase()} ]`;
+            }
+            
+            // Actualizar título de la página
+            document.title = translations[currentLang].title;
+            
+            // Actualizar elementos con data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+
+            // Actualizar los contenidos dinámicos guardados para el efecto typewriter
+            originalTabContents['github'] = translations[currentLang].githubContent;
+            originalTabContents['linkedin'] = translations[currentLang].linkedinContent;
+            originalTabContents['email'] = translations[currentLang].emailContent;
+            
+            // Si el reproductor de radio está inicializado, actualizar UI
+            if (typeof updateRadioUI === 'function') {
+                updateRadioUI();
+            }
+        }
+
+        function toggleLanguage() {
+            playPipBoySound();
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            localStorage.setItem('language', currentLang);
+            
+            // Efecto glitch visual momentáneo
+            const displayArea = document.getElementById('tab-display-area');
+            if (displayArea) {
+                displayArea.classList.add('glitch-effect');
+                setTimeout(() => {
+                    displayArea.classList.remove('glitch-effect');
+                }, 400);
+            }
+            
+            applyTranslations();
+        }
+
         function updatePhotos() {
             const isAmber = document.documentElement.classList.contains('theme-amber');
             const photoFilter = isAmber 
@@ -327,14 +773,7 @@
         }
 
         function initTabContents() {
-            const github = document.getElementById('github-content-wrapper');
-            const linkedin = document.getElementById('linkedin-content-wrapper');
-            const email = document.getElementById('email-content-wrapper');
-            
-            if (github) originalTabContents['github'] = github.innerHTML;
-            if (linkedin) originalTabContents['linkedin'] = linkedin.innerHTML;
-            if (email) originalTabContents['email'] = email.innerHTML;
-            
+            applyTranslations();
             updatePhotos();
         }
 
@@ -557,60 +996,13 @@
                 let newContent = '';
 
                 if (seccion === 'perfil') {
-                    newContent = `<h2>&gt; PERFIL PROFESIONAL</h2>
-<p>
-    <strong style="display:block; margin-bottom:5px;">[ DESCRIPCIÓN ]</strong>
-    Desarrolladora FullStack con experiencia en el desarrollo de aplicaciones móviles multiplataforma enfocadas al turismo cultural. Especializada en arquitecturas Cloud, internacionalización de contenido e integración de IA.<br><br>
-    
-    <strong style="display:block; margin-bottom:5px;">[ TECNOLOGÍAS ]</strong>
-    Flutter, Firebase, Node.js.<br><br>
-    
-    <strong style="display:block; margin-bottom:5px;">[ APTITUDES ]</strong>
-    Alta capacidad de adaptación, resolución de problemas complejos bajo metodologías ágiles y un enfoque proactivo orientado a la calidad del software.
-</p>`;
+                    newContent = translations[currentLang].statsPerfil;
                 } else if (seccion === 'estudios') {
-                    newContent = `<h2>&gt; REGISTROS ACADÉMICOS</h2>
-<p>
-    <strong style="display:block; margin-bottom:5px;">[ 2024 - 2026 ] TÉCNICO SUPERIOR EN DESARROLLO DE APLICACIONES MULTIPLATAFORMA</strong>
-    INSTITUCIÓN: Davante MEDAC<br>
-    &gt; Ciclo completo de desarrollo de aplicaciones nativas, híbridas y Progresivas (PWA).<br>
-    &gt; Arquitectura e implementación de backend, integración de APIs RESTful y gestión de bases de datos SQL/NoSQL.<br><br>
-    
-    <strong style="display:block; margin-bottom:5px;">[ 2019 - 2020 ] BACHILLERATO DE CIENCIAS SOCIALES</strong>
-    INSTITUCIÓN: IES Luis Bueno Crespo
-</p>`;
+                    newContent = translations[currentLang].statsEstudios;
                 } else if (seccion === 'experiencia') {
-                    newContent = `<h2>&gt; HISTORIAL DE OPERACIONES</h2>
-<p>
-    <strong style="display:block; margin-bottom:5px;">[ MAR 2026 - JUN 2026 ] DESARROLLADORA MULTIPLATAFORMA (PRÁCTICAS)</strong>
-    ORGANIZACIÓN: Engranajes Ciencia<br>
-    &gt; <strong>Data & Cloud:</strong> Diseño/migración a Cloud Firestore y Storage con Security Rules.<br>
-    &gt; <strong>Backend:</strong> Soporte multiidioma (JSON) y endpoints asíncronos con Python (FastAPI/Antigravity).<br>
-    &gt; <strong>DevOps/Mobile:</strong> SDK RevenueCat, compilación APK, gestión Play Store.<br><br>
-    
-    <strong style="display:block; margin-bottom:5px;">[ 2023 - ACTUALIDAD ] AYUDANTE DE COCINA</strong>
-    ORGANIZACIÓN: La Muga<br>
-    &gt; Gestión de operaciones críticas bajo entornos de alta presión.<br>
-    &gt; Optimización de recursos, organización meticulosa y sincronización de tareas en equipo.
-</p>`;
+                    newContent = translations[currentLang].statsExperiencia;
                 } else if (seccion === 'habilidades') {
-                    newContent = `<h2>&gt; ESPECIFICACIONES TÉCNICAS (PERKS)</h2>
-<p>
-    <strong style="display:block; margin-bottom:5px;">[ FRONTEND Y MÓVIL ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; Dart (Flutter), JavaScript.</span>
-    
-    <strong style="display:block; margin-bottom:5px;">[ BACKEND ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; Python (FastAPI), Node.js, Java.</span>
-    
-    <strong style="display:block; margin-bottom:5px;">[ CLOUD Y BBDD ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; SQL, Firebase (Firestore, Storage, Auth).</span>
-    
-    <strong style="display:block; margin-bottom:5px;">[ DEVOPS E INFRA ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
-    
-    <strong style="display:block; margin-bottom:5px;">[ IDIOMAS ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; Inglés (B2).</span>
-</p>`;
+                    newContent = translations[currentLang].statsHabilidades;
                 }
 
                 dataDisplay.classList.remove('hidden');
@@ -727,12 +1119,31 @@
         ];
 
         let currentTrackIndex = 0;
+        // Cargar pista guardada si existe
+        const savedTrack = localStorage.getItem('radioTrackIndex');
+        if (savedTrack !== null) {
+            currentTrackIndex = parseInt(savedTrack, 10);
+            if (isNaN(currentTrackIndex) || currentTrackIndex < 0 || currentTrackIndex >= radioTracks.length) {
+                currentTrackIndex = 0;
+            }
+        }
+
         let isRadioPlaying = false;
         let radioAudio = new Audio();
         
         // Cargar primera pista pero no reproducir automáticamente
         radioAudio.src = radioTracks[currentTrackIndex].url;
-        radioAudio.volume = 0.5;
+        
+        // Cargar volumen guardado si existe
+        const savedVolume = localStorage.getItem('radioVolume');
+        if (savedVolume !== null) {
+            radioAudio.volume = parseFloat(savedVolume);
+            // Sincronizar slider de volumen
+            const volSlider = document.getElementById('radio-vol');
+            if (volSlider) volSlider.value = savedVolume;
+        } else {
+            radioAudio.volume = 0.5;
+        }
         
         // Manejar el final de una pista para saltar a la siguiente automáticamente
         radioAudio.addEventListener('ended', () => {
@@ -742,9 +1153,9 @@
         // Manejar errores de carga
         radioAudio.addEventListener('error', (e) => {
             console.error("Error al cargar el archivo de audio:", e);
-            document.getElementById('radio-title').innerText = "ERROR DE SINTONÍA";
+            document.getElementById('radio-title').innerText = translations[currentLang].radioError;
             document.getElementById('radio-title').classList.remove('marquee');
-            document.getElementById('radio-artist').innerText = "INTENTE DE NUEVO";
+            document.getElementById('radio-artist').innerText = translations[currentLang].radioRetry;
         });
 
         function updateRadioUI() {
@@ -752,6 +1163,8 @@
             const titleEl = document.getElementById('radio-title');
             const artistEl = document.getElementById('radio-artist');
             const playBtn = document.getElementById('radio-play-btn');
+
+            if (!titleEl || !artistEl || !playBtn) return;
 
             if (isRadioPlaying) {
                 titleEl.innerText = track.title;
@@ -765,7 +1178,7 @@
                     titleEl.classList.remove('marquee');
                 }
             } else {
-                titleEl.innerText = "RADIO APAGADA";
+                titleEl.innerText = translations[currentLang].radioOff;
                 titleEl.classList.remove('marquee');
                 artistEl.innerText = "--";
                 playBtn.innerText = "[ PLAY ]";
@@ -796,6 +1209,7 @@
         function nextTrack() {
             playPipBoySound();
             currentTrackIndex = (currentTrackIndex + 1) % radioTracks.length;
+            localStorage.setItem('radioTrackIndex', currentTrackIndex);
             radioAudio.src = radioTracks[currentTrackIndex].url;
             if (isRadioPlaying) {
                 radioAudio.play().then(() => {
@@ -809,6 +1223,7 @@
         function prevTrack() {
             playPipBoySound();
             currentTrackIndex = (currentTrackIndex - 1 + radioTracks.length) % radioTracks.length;
+            localStorage.setItem('radioTrackIndex', currentTrackIndex);
             radioAudio.src = radioTracks[currentTrackIndex].url;
             if (isRadioPlaying) {
                 radioAudio.play().then(() => {
@@ -821,6 +1236,7 @@
 
         function changeVolume(value) {
             radioAudio.volume = value;
+            localStorage.setItem('radioVolume', value);
         }
 
         // --- Visualizador en Canvas ---
