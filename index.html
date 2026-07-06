@@ -44,6 +44,34 @@
                         <button class="nav-btn" onclick="changeTab('linkedin')">[ LINKEDIN ]</button>
                         <button class="nav-btn" onclick="changeTab('email')">[ EMAIL ]</button>
                     </nav>
+
+                    <!-- REPRODUCTOR DE RADIO RETRO -->
+                    <div class="pipboy-radio-container">
+                        <div class="radio-header">[ RADIO PIP-BOY ]</div>
+                        <div class="radio-station">FM 101.3 GNR - WASTELAND</div>
+                        
+                        <div class="radio-track-info">
+                            <div class="radio-title-container">
+                                <div id="radio-title">RADIO APAGADA</div>
+                            </div>
+                            <div id="radio-artist">--</div>
+                        </div>
+
+                        <div class="radio-visualizer-container">
+                            <canvas id="radio-visualizer" width="280" height="35"></canvas>
+                        </div>
+
+                        <div class="radio-controls">
+                            <button onclick="prevTrack()" class="radio-btn" title="Anterior">[ &lt;&lt; ]</button>
+                            <button id="radio-play-btn" onclick="togglePlay()" class="radio-btn" title="Reproducir/Pausar">[ PLAY ]</button>
+                            <button onclick="nextTrack()" class="radio-btn" title="Siguiente">[ &gt;&gt; ]</button>
+                        </div>
+
+                        <div class="radio-volume">
+                            <label for="radio-vol">VOL:</label>
+                            <input type="range" id="radio-vol" min="0" max="1" step="0.05" value="0.5" oninput="changeVolume(this.value)">
+                        </div>
+                    </div>
                 </aside>
                 
                 <section id="tab-display-area" class="content-display">
@@ -654,6 +682,187 @@
                     // Si ocurre un error crítico de conexión a internet
                     alert("[ ERROR CRÍTICO ] No se pudo establecer conexión de red. Compruebe su terminal.");
                 });
+            }
+        });
+
+        // ==========================================
+        // SISTEMA DE RADIO RETRO DEL PIP-BOY
+        // ==========================================
+        const radioTracks = [
+            {
+                title: "I Don't Want to Set the World on Fire",
+                artist: "The Ink Spots",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/The%20Ink%20Spots%20-%20I%20Don%27t%20Want%20to%20Set%20the%20World%20on%20Fire.mp3"
+            },
+            {
+                title: "Maybe",
+                artist: "The Ink Spots",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/The%20Ink%20Spots%20-%20Maybe.mp3"
+            },
+            {
+                title: "Anything Goes",
+                artist: "Cole Porter",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Cole%20Porter%20-%20Anything%20Goes.mp3"
+            },
+            {
+                title: "Civilization (Bingo Bango Bongo)",
+                artist: "Danny Kaye & The Andrews Sisters",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Danny%20Kaye%20and%20The%20Andrews%20Sisters%20-%20Civilization.mp3"
+            },
+            {
+                title: "Butcher Pete (Part 1)",
+                artist: "Roy Brown",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Roy%20Brown%20-%20Butcher%20Pete%20%28Part%201%29.mp3"
+            },
+            {
+                title: "Let's Go Sunning",
+                artist: "Jack Shaindlin",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Jack%20Shaindlin%20-%20Let%27s%20Go%20Sunning.mp3"
+            },
+            {
+                title: "Crazy He Calls Me",
+                artist: "Billie Holiday",
+                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Billie%20Holiday%20-%20Crazy%20He%20Calls%20Me.mp3"
+            }
+        ];
+
+        let currentTrackIndex = 0;
+        let isRadioPlaying = false;
+        let radioAudio = new Audio();
+        
+        // Cargar primera pista pero no reproducir automáticamente
+        radioAudio.src = radioTracks[currentTrackIndex].url;
+        radioAudio.volume = 0.5;
+        
+        // Manejar el final de una pista para saltar a la siguiente automáticamente
+        radioAudio.addEventListener('ended', () => {
+            nextTrack();
+        });
+
+        // Manejar errores de carga
+        radioAudio.addEventListener('error', (e) => {
+            console.error("Error al cargar el archivo de audio:", e);
+            document.getElementById('radio-title').innerText = "ERROR DE SINTONÍA";
+            document.getElementById('radio-title').classList.remove('marquee');
+            document.getElementById('radio-artist').innerText = "INTENTE DE NUEVO";
+        });
+
+        function updateRadioUI() {
+            const track = radioTracks[currentTrackIndex];
+            const titleEl = document.getElementById('radio-title');
+            const artistEl = document.getElementById('radio-artist');
+            const playBtn = document.getElementById('radio-play-btn');
+
+            if (isRadioPlaying) {
+                titleEl.innerText = track.title;
+                artistEl.innerText = track.artist;
+                playBtn.innerText = "[ PAUSE ]";
+                
+                // Si el título es muy largo, añadimos marquesina
+                if (track.title.length > 20) {
+                    titleEl.classList.add('marquee');
+                } else {
+                    titleEl.classList.remove('marquee');
+                }
+            } else {
+                titleEl.innerText = "RADIO APAGADA";
+                titleEl.classList.remove('marquee');
+                artistEl.innerText = "--";
+                playBtn.innerText = "[ PLAY ]";
+            }
+        }
+
+        function togglePlay() {
+            playPipBoySound();
+            if (isRadioPlaying) {
+                radioAudio.pause();
+                isRadioPlaying = false;
+            } else {
+                radioAudio.play().then(() => {
+                    isRadioPlaying = true;
+                    updateRadioUI();
+                }).catch(err => {
+                    console.warn("Fallo al reproducir audio:", err);
+                    radioAudio.load();
+                    radioAudio.play().then(() => {
+                        isRadioPlaying = true;
+                        updateRadioUI();
+                    });
+                });
+            }
+            updateRadioUI();
+        }
+
+        function nextTrack() {
+            playPipBoySound();
+            currentTrackIndex = (currentTrackIndex + 1) % radioTracks.length;
+            radioAudio.src = radioTracks[currentTrackIndex].url;
+            if (isRadioPlaying) {
+                radioAudio.play().then(() => {
+                    updateRadioUI();
+                });
+            } else {
+                updateRadioUI();
+            }
+        }
+
+        function prevTrack() {
+            playPipBoySound();
+            currentTrackIndex = (currentTrackIndex - 1 + radioTracks.length) % radioTracks.length;
+            radioAudio.src = radioTracks[currentTrackIndex].url;
+            if (isRadioPlaying) {
+                radioAudio.play().then(() => {
+                    updateRadioUI();
+                });
+            } else {
+                updateRadioUI();
+            }
+        }
+
+        function changeVolume(value) {
+            radioAudio.volume = value;
+        }
+
+        // --- Visualizador en Canvas ---
+        const rCanvas = document.getElementById('radio-visualizer');
+        const rCtx = rCanvas.getContext('2d');
+        const rBarCount = 28;
+        const rBarWidth = rCanvas.width / rBarCount;
+        let rBarHeights = Array(rBarCount).fill(2);
+
+        function drawRadioVisualizer() {
+            rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
+            
+            // Conseguir color de Pip-Boy (verde o ámbar)
+            const isAmber = document.documentElement.classList.contains('theme-amber');
+            rCtx.fillStyle = isAmber ? '#ffb642' : '#1aff1a';
+            
+            for (let i = 0; i < rBarCount; i++) {
+                let target = 2;
+                if (isRadioPlaying) {
+                    const time = Date.now() * 0.006;
+                    // Formula matemática para simular un espectro rítmico
+                    const noise = Math.abs(Math.sin(i * 0.25 + time) * Math.cos(i * 0.1 - time * 0.8));
+                    target = 2 + noise * (rCanvas.height - 4) * (0.35 + Math.random() * 0.65);
+                } else {
+                    // Pequeña estática de línea casi plana
+                    target = 2 + Math.sin(i * 0.5 + Date.now() * 0.003) * 1.0;
+                }
+                
+                rBarHeights[i] += (target - rBarHeights[i]) * 0.25;
+                
+                const h = rBarHeights[i];
+                const x = i * (rBarWidth + 1.5);
+                const y = (rCanvas.height - h) / 2;
+                
+                rCtx.fillRect(x, y, rBarWidth - 1, h);
+            }
+            
+            requestAnimationFrame(drawRadioVisualizer);
+        }
+
+        // Iniciar el loop del visualizador
+        drawRadioVisualizer();
             }
         });
     </script>

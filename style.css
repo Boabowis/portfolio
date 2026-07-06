@@ -192,6 +192,8 @@ body {
     border-right: 2px dashed var(--pipboy-alpha-03);
     padding-right: 20px;
     transition: border-color 0.5s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .welcome-text {
@@ -701,5 +703,173 @@ body {
     }
     .vaultboy-central-container img {
         height: 150px;
+    }
+}
+
+/* ==========================================================================
+   ESTILOS DE LA RADIO RETRO DEL PIP-BOY
+   ========================================================================== */
+.pipboy-radio-container {
+    margin-top: auto;
+    border: 1px solid var(--pipboy-color);
+    padding: 12px 15px;
+    background-color: var(--pipboy-alpha-05);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 0 10px var(--pipboy-alpha-02);
+    transition: border-color 0.5s ease, background-color 0.5s ease;
+}
+
+.radio-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px dashed var(--pipboy-color);
+    padding-bottom: 4px;
+    text-shadow: var(--pipboy-shadow);
+    letter-spacing: 1px;
+}
+
+.radio-station {
+    font-size: 0.85rem;
+    color: var(--pipboy-alpha-80);
+    text-align: center;
+    margin-top: -4px;
+}
+
+.radio-track-info {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--pipboy-alpha-10);
+    padding: 2px;
+}
+
+.radio-title-container {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+#radio-title {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--pipboy-color);
+}
+
+#radio-artist {
+    font-size: 0.8rem;
+    color: var(--pipboy-alpha-80);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* Animación de marquesina por si el título es largo */
+.marquee {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee-anim 12s linear infinite;
+}
+
+@keyframes marquee-anim {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+.radio-visualizer-container {
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--pipboy-alpha-03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+#radio-visualizer {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.radio-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.radio-btn {
+    background: none;
+    border: 1px solid var(--pipboy-alpha-50);
+    color: var(--pipboy-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 3px 6px;
+    flex-grow: 1;
+    text-align: center;
+    transition: background-color 0.2s, color 0.2s, border-color 0.5s;
+}
+
+.radio-btn:hover {
+    background-color: var(--pipboy-color);
+    color: var(--pipboy-bg);
+    font-weight: bold;
+    text-shadow: none;
+}
+
+.radio-volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+.radio-volume label {
+    font-weight: bold;
+    color: var(--pipboy-alpha-80);
+}
+
+.radio-volume input[type="range"] {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    background: var(--pipboy-alpha-30);
+    height: 3px;
+    outline: none;
+    border-radius: 2px;
+}
+
+.radio-volume input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    background: var(--pipboy-color);
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: var(--pipboy-shadow);
+    transition: background 0.5s ease;
+}
+
+/* Responsivo para el reproductor */
+@media (max-width: 850px) {
+    .pipboy-radio-container {
+        margin-top: 15px;
+        width: 100%;
+        max-width: 350px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
