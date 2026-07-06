@@ -635,13 +635,13 @@ body {
 }
 
 .theme-sun-btn:hover {
-    color: #ffb642; /* Cambia a naranja en hover del tema verde */
+    color: #ffb642 !important; /* Cambia a naranja en hover del tema verde */
     filter: drop-shadow(0 0 8px rgba(255, 182, 66, 0.8));
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
 }
 
 .theme-amber .theme-sun-btn:hover {
-    color: #1aff1a; /* Cambia a verde en hover del tema naranja */
+    color: #1aff1a !important; /* Cambia a verde en hover del tema naranja */
     filter: drop-shadow(0 0 8px rgba(26, 255, 26, 0.8));
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
 }
