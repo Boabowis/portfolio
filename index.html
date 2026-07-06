@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault-Tec OS v101</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body>
 
@@ -25,7 +25,7 @@
             <div style="display: flex; align-items: center; gap: 20px;">
                 <div class="header-name">USUARIO: ALBA HOCES</div>
                 <!-- Botón de Engranaje de Refugio para cambio de tema -->
-                <button id="theme-toggle" class="theme-gear-btn" onclick="toggleTheme()" title="Cambiar color del Pip-Boy">
+                <button id="theme-toggle" class="theme-gear-btn" onclick="toggleTheme()" title="Cambiar color del Pip-Boy" style="background: none; border: none; padding: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--pipboy-color); outline: none; box-shadow: none;">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
                         <path d="M12 2c-.6 0-1.1.4-1.2 1l-.3 1.5c-.8.2-1.6.6-2.3 1.1l-1.3-1c-.5-.4-1.2-.3-1.6.1L3.7 6.3c-.4.4-.5 1.1-.1 1.6l1 1.3c-.5.7-.9 1.5-1.1 2.3l-1.5.3c-.6.1-1.0.6-1.0 1.2v2.2c0 .6.4 1.1 1.0 1.2l1.5.3c.2.8.6 1.6 1.1 2.3l-1 1.3c-.4.5-.3 1.2.1 1.6l1.6 1.6c.4.4 1.1.5 1.6.1l1.3-1c.7.5 1.5.9 2.3 1.1l.3 1.5c.1.6.6 1 1.2 1h2.2c.6 0 1.1-.4 1.2-1l.3-1.5c.8-.2 1.6-.6 2.3-1.1l1.3 1c.5.4 1.2.3 1.6-.1l1.6-1.6c.4-.4.5-1.1.1-1.6l-1-1.3c.5-.7.9-1.5 1.1-2.3l1.5-.3c.6-.1 1.0-.6 1.0-1.2V13.1c0-.6-.4-1.1-1.0-1.2l-1.5-.3c-.2-.8-.6-1.6-1.1-2.3l1-1.3c.4-.5.3-1.2-.1-1.6l-1.6-1.6c-.4-.4-1.1-.5-1.6-.1l-1.3 1c-.7-.5-1.5-.9-2.3-1.1l-.3-1.5c-.1-.6-.6-1-1.2-1H12zm0 6c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4z" />
                     </svg>
@@ -253,8 +253,37 @@
         let audioCtx;
         let originalTabContents = {};
 
+        function updatePhotos() {
+            const isAmber = document.documentElement.classList.contains('theme-amber');
+            const photoFilter = isAmber 
+                ? 'grayscale(100%) sepia(100%) hue-rotate(330deg) saturate(600%) contrast(1.2)' 
+                : 'grayscale(100%) sepia(100%) hue-rotate(70deg) saturate(400%) contrast(1.2)';
+            
+            document.querySelectorAll('.pipboy-photo').forEach(img => {
+                img.style.filter = photoFilter;
+            });
+            
+            const vaultBoy = document.getElementById('vaultboy-img');
+            if (vaultBoy) {
+                vaultBoy.style.filter = isAmber
+                    ? 'grayscale(100%) contrast(3) brightness(0.85) sepia(100%) hue-rotate(330deg) saturate(800%)'
+                    : 'grayscale(100%) contrast(3) brightness(0.6) sepia(100%) hue-rotate(70deg) saturate(600%)';
+            }
+
+            const qrImage = document.getElementById('qr-image');
+            if (qrImage) {
+                qrImage.style.filter = isAmber
+                    ? 'invert(0.8) sepia(1) saturate(50) hue-rotate(330deg) drop-shadow(0 0 5px rgba(255, 182, 66, 0.5))'
+                    : 'invert(0.8) sepia(1) saturate(50) hue-rotate(70deg) drop-shadow(0 0 5px rgba(26, 255, 26, 0.5))';
+            }
+        }
+
         function toggleTheme() {
-            playPipBoySound();
+            try {
+                playPipBoySound();
+            } catch (error) {
+                console.warn(error);
+            }
             
             const btn = document.getElementById('theme-toggle');
             if (btn) {
@@ -266,12 +295,14 @@
             
             const isAmber = document.documentElement.classList.toggle('theme-amber');
             localStorage.setItem('theme', isAmber ? 'amber' : 'green');
+            updatePhotos();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             originalTabContents['github'] = document.getElementById('github-content-wrapper').innerHTML;
             originalTabContents['linkedin'] = document.getElementById('linkedin-content-wrapper').innerHTML;
             originalTabContents['email'] = document.getElementById('email-content-wrapper').innerHTML;
+            updatePhotos();
         });
 
         function playVaultDoorSound() {
@@ -386,7 +417,9 @@
             // Efecto máquina de escribir para GitHub, LinkedIn y Email
             if (tabName === 'github') {
                 const wrapper = document.getElementById('github-content-wrapper');
-                typeWriter(wrapper, originalTabContents['github'], 1);
+                typeWriter(wrapper, originalTabContents['github'], 1, (progress) => {
+                    if (progress >= 1) updatePhotos();
+                });
             } else if (tabName === 'linkedin') {
                 const wrapper = document.getElementById('linkedin-content-wrapper');
                 typeWriter(wrapper, originalTabContents['linkedin'], 1, (progress) => {
@@ -395,10 +428,15 @@
                         // Revelar de arriba a abajo progresivamente
                         qr.style.clipPath = `inset(0 0 ${100 - (progress * 100)}% 0)`;
                     }
+                    if (progress >= 1) updatePhotos();
                 });
             } else if (tabName === 'email') {
                 const wrapper = document.getElementById('email-content-wrapper');
-                typeWriter(wrapper, originalTabContents['email'], 1);
+                typeWriter(wrapper, originalTabContents['email'], 1, (progress) => {
+                    if (progress >= 1) updatePhotos();
+                });
+            } else {
+                updatePhotos();
             }
         }
 
