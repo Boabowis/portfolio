@@ -3,28 +3,44 @@
 
 :root {
     --pipboy-color: #1aff1a;
-    --pipboy-color-rgb: 26, 255, 26;
     --pipboy-color-bright: #00ff00;
-    --pipboy-color-bright-rgb: 0, 255, 0;
     --pipboy-bg: #050d06;
     --pipboy-bg-dark: #020502;
-    --pipboy-vaultboy-filter: grayscale(100%) contrast(3) brightness(0.6) sepia(100%) hue-rotate(70deg) saturate(600%);
-    --pipboy-qr-filter: invert(0.8) sepia(1) saturate(50) hue-rotate(70deg) drop-shadow(0 0 5px rgba(26, 255, 26, 0.5));
-    --pipboy-photo-filter: grayscale(100%) sepia(100%) hue-rotate(70deg) saturate(400%) contrast(1.2);
     --pipboy-shadow: 0 0 5px rgba(26, 255, 26, 0.7);
+    
+    /* Alpha colors */
+    --pipboy-alpha-02: rgba(26, 255, 26, 0.02);
+    --pipboy-alpha-03: rgba(26, 255, 26, 0.3);
+    --pipboy-alpha-05: rgba(26, 255, 26, 0.05);
+    --pipboy-alpha-10: rgba(26, 255, 26, 0.1);
+    --pipboy-alpha-50: rgba(26, 255, 26, 0.5);
+    --pipboy-alpha-80: rgba(26, 255, 26, 0.8);
+    
+    --pipboy-bright-alpha-20: rgba(0, 255, 0, 0.2);
+    --pipboy-bright-alpha-25: rgba(0, 255, 0, 0.25);
+    --pipboy-bright-alpha-40: rgba(0, 255, 0, 0.4);
+    --pipboy-bright-alpha-60: rgba(0, 255, 0, 0.6);
 }
 
-:root.theme-amber {
-    --pipboy-color: #ffb642; /* Naranja/Amber retro del Fallout */
-    --pipboy-color-rgb: 255, 182, 66;
+.theme-amber {
+    --pipboy-color: #ffb642;
     --pipboy-color-bright: #ff9f00;
-    --pipboy-color-bright-rgb: 255, 159, 0;
     --pipboy-bg: #110700;
     --pipboy-bg-dark: #080300;
-    --pipboy-vaultboy-filter: grayscale(100%) contrast(3) brightness(0.85) sepia(100%) hue-rotate(330deg) saturate(800%);
-    --pipboy-qr-filter: invert(0.8) sepia(1) saturate(50) hue-rotate(330deg) drop-shadow(0 0 5px rgba(255, 182, 66, 0.5));
-    --pipboy-photo-filter: grayscale(100%) sepia(100%) hue-rotate(330deg) saturate(600%) contrast(1.2);
     --pipboy-shadow: 0 0 5px rgba(255, 182, 66, 0.7);
+    
+    /* Alpha colors */
+    --pipboy-alpha-02: rgba(255, 182, 66, 0.02);
+    --pipboy-alpha-03: rgba(255, 182, 66, 0.3);
+    --pipboy-alpha-05: rgba(255, 182, 66, 0.05);
+    --pipboy-alpha-10: rgba(255, 182, 66, 0.1);
+    --pipboy-alpha-50: rgba(255, 182, 66, 0.5);
+    --pipboy-alpha-80: rgba(255, 182, 66, 0.8);
+    
+    --pipboy-bright-alpha-20: rgba(255, 159, 0, 0.2);
+    --pipboy-bright-alpha-25: rgba(255, 159, 0, 0.25);
+    --pipboy-bright-alpha-40: rgba(255, 159, 0, 0.4);
+    --pipboy-bright-alpha-60: rgba(255, 159, 0, 0.6);
 }
 
 * {
@@ -84,7 +100,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0 auto 30px auto;
-    box-shadow: 0 0 15px rgba(var(--pipboy-color-rgb), 0.5);
+    box-shadow: 0 0 15px var(--pipboy-alpha-50);
     transition: transform 1s ease-in, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -171,9 +187,9 @@ body {
 
 .side-menu {
     width: 350px;
-    min-width: 350px; /* Evita que se encoja el panel izquierdo */
-    flex-shrink: 0;   /* Fuerza a flexbox a respetar el tamaño */
-    border-right: 2px dashed rgba(var(--pipboy-color-rgb), 0.3);
+    min-width: 350px;
+    flex-shrink: 0;
+    border-right: 2px dashed var(--pipboy-alpha-03);
     padding-right: 20px;
     transition: border-color 0.5s ease;
 }
@@ -189,9 +205,9 @@ body {
 .pipboy-nav-vertical {
     display: flex;
     flex-direction: column;
-    gap: 30px; /* Mucho espacio para el Vault Boy */
+    gap: 30px;
     margin-left: 20px;
-    padding-left: 10px; /* Ligero padding izquierdo para separar del borde */
+    padding-left: 10px;
 }
 
 .nav-btn {
@@ -218,16 +234,16 @@ body {
     border: 2px solid var(--pipboy-color);
     border-radius: 5px;
     padding: 20px;
-    background-color: rgba(var(--pipboy-color-rgb), 0.02);
+    background-color: var(--pipboy-alpha-02);
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Fuerza a que no crezca más allá de la pantalla */
+    overflow: hidden;
     transition: border-color 0.5s ease, background-color 0.5s ease;
 }
 
 .content-display {
     flex-grow: 1;
-    height: 100%; /* CLAVE: Darle altura estricta para que el min-height hijo funcione */
+    height: 100%;
     padding: 20px 20px 20px 40px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -236,7 +252,7 @@ body {
 }
 
 .main-tab-content {
-    min-height: 100%; /* Ahora sí funcionará */
+    min-height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -247,14 +263,14 @@ body {
     align-items: center;
     flex-grow: 1;
     width: 100%;
-    margin: auto 0; /* Asegura el centrado vertical estricto */
+    margin: auto 0;
 }
 
 .stats-column {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 60px; /* Aumentado el espaciado vertical entre botones */
+    gap: 60px;
     width: 30%;
     height: 100%;
 }
@@ -275,17 +291,32 @@ body {
     height: 100%;
 }
 
+/* FILTRO DEL VAULT BOY */
 .vaultboy-central-container img {
     height: 250px;
     image-rendering: pixelated;
-    filter: var(--pipboy-vaultboy-filter);
+    filter: grayscale(100%) contrast(3) brightness(0.6) sepia(100%) hue-rotate(70deg) saturate(600%);
     mix-blend-mode: screen; 
     transition: filter 0.5s ease;
 }
 
+.theme-amber .vaultboy-central-container img {
+    filter: grayscale(100%) contrast(3) brightness(0.85) sepia(100%) hue-rotate(330deg) saturate(800%);
+}
+
+/* FILTRO DE LAS FOTOS Y CAPTURAS DEL PORTFOLIO */
+.pipboy-photo {
+    filter: grayscale(100%) sepia(100%) hue-rotate(70deg) saturate(400%) contrast(1.2);
+    transition: filter 0.5s ease;
+}
+
+.theme-amber .pipboy-photo {
+    filter: grayscale(100%) sepia(100%) hue-rotate(330deg) saturate(600%) contrast(1.2);
+}
+
 /* BOTONES ESTILO PANEL */
 .stats-panel-btn {
-    background: rgba(var(--pipboy-color-rgb), 0.03);
+    background: var(--pipboy-alpha-02);
     border: 2px solid var(--pipboy-color);
     color: var(--pipboy-color);
     padding: 15px;
@@ -348,10 +379,10 @@ body {
 /* DISEÑO DE LINKEDIN */
 .linkedin-layout {
     display: flex;
-    flex-wrap: wrap; /* Para responsive, se apila si la pantalla es pequeña */
+    flex-wrap: wrap;
     gap: 40px;
     flex-grow: 1;
-    align-items: flex-start; /* Alineación superior como en stats */
+    align-items: flex-start;
 }
 
 .linkedin-text-column {
@@ -372,8 +403,8 @@ body {
     flex: 0 0 300px;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Aseguramos que inicie arriba dentro de su margen */
-    margin-top: 85px; /* Empuja el contenedor hacia abajo para alinear con PROTOCOLO DE ACCESO */
+    align-items: flex-start;
+    margin-top: 85px;
 }
 
 .terminal-link {
@@ -398,8 +429,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(var(--pipboy-color-rgb), 0.02);
-    box-shadow: inset 0 0 10px rgba(var(--pipboy-color-rgb), 0.1);
+    background-color: var(--pipboy-alpha-02);
+    box-shadow: inset 0 0 10px var(--pipboy-alpha-10);
     transition: border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
 }
 
@@ -415,10 +446,10 @@ body {
 /* DISEÑO DE EMAIL */
 .email-layout {
     display: flex;
-    flex-wrap: wrap; /* Responsive */
+    flex-wrap: wrap;
     gap: 40px;
     flex-grow: 1;
-    align-items: flex-start; /* Alineado arriba */
+    align-items: flex-start;
 }
 
 .email-text-column {
@@ -440,7 +471,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 85px; /* Empuja el contenedor hacia abajo para alinear visualmente */
+    margin-top: 85px;
 }
 
 .hacking-container {
@@ -448,9 +479,9 @@ body {
     text-align: left;
     display: flex;
     flex-direction: column;
-    background-color: rgba(var(--pipboy-color-rgb), 0.02);
-    border: 1px solid rgba(var(--pipboy-color-rgb), 0.3);
-    box-shadow: inset 0 0 15px rgba(var(--pipboy-color-rgb), 0.05);
+    background-color: var(--pipboy-alpha-02);
+    border: 1px solid var(--pipboy-alpha-03);
+    box-shadow: inset 0 0 15px var(--pipboy-alpha-05);
     width: 100%;
     transition: border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
 }
@@ -460,9 +491,9 @@ body {
     font-weight: bold;
     font-size: 1.1rem;
     color: var(--pipboy-color);
-    border-bottom: 1px dashed rgba(var(--pipboy-color-rgb), 0.5);
+    border-bottom: 1px dashed var(--pipboy-alpha-50);
     padding-bottom: 5px;
-    animation: blink 2.5s infinite; /* Efecto de parpadeo suave */
+    animation: blink 2.5s infinite;
     transition: color 0.5s ease, border-color 0.5s ease;
 }
 
@@ -473,11 +504,16 @@ body {
     opacity: 0.8;
 }
 
+/* FILTRO DE CÓDIGO QR */
 .qr-image {
     width: 200px;
     height: 200px;
-    filter: var(--pipboy-qr-filter);
+    filter: invert(0.8) sepia(1) saturate(50) hue-rotate(70deg) drop-shadow(0 0 5px var(--pipboy-alpha-50));
     transition: filter 0.5s ease;
+}
+
+.theme-amber .qr-image {
+    filter: invert(0.8) sepia(1) saturate(50) hue-rotate(330deg) drop-shadow(0 0 5px var(--pipboy-alpha-50));
 }
 
 /* ESTILOS DEL FORMULARIO DE COMUNICACIONES */
@@ -501,27 +537,27 @@ body {
 }
 
 .terminal-input {
-    background-color: rgba(0, 0, 0, 0.6); /* Negro muy oscuro con ligera transparencia */
-    border: 1px solid rgba(var(--pipboy-color-bright-rgb), 0.4); /* Verde/Naranja fósforo con opacidad */
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--pipboy-bright-alpha-40);
     color: var(--pipboy-color-bright);
-    font-family: 'Share Tech Mono', monospace; /* Tipografía monoespaciada */
+    font-family: 'Share Tech Mono', monospace;
     font-size: 1.1rem;
     padding: 10px;
     outline: none;
-    text-shadow: 0 0 4px rgba(var(--pipboy-color-bright-rgb), 0.6); /* Sutil text-shadow de brillo */
+    text-shadow: 0 0 4px var(--pipboy-bright-alpha-60);
     transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.5s ease, text-shadow 0.5s ease;
     width: 100%;
-    resize: none; /* Evitar resize para no romper la interfaz */
+    resize: none;
 }
 
 .terminal-input::placeholder {
-    color: rgba(var(--pipboy-color-bright-rgb), 0.25); /* Apagado */
+    color: var(--pipboy-bright-alpha-25);
     text-shadow: none;
 }
 
 .terminal-input:focus {
-    border-color: var(--pipboy-color-bright); /* Brillo intenso */
-    box-shadow: 0 0 10px rgba(var(--pipboy-color-bright-rgb), 0.6), inset 0 0 5px rgba(var(--pipboy-color-bright-rgb), 0.2);
+    border-color: var(--pipboy-color-bright);
+    box-shadow: 0 0 10px var(--pipboy-bright-alpha-60), inset 0 0 5px var(--pipboy-bright-alpha-20);
 }
 
 .form-actions {
@@ -538,12 +574,12 @@ body {
     font-size: 1.2rem;
     cursor: pointer;
     padding: 5px 10px;
-    text-shadow: 0 0 5px rgba(var(--pipboy-color-bright-rgb), 0.6);
+    text-shadow: 0 0 5px var(--pipboy-bright-alpha-60);
     transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .terminal-btn:hover {
-    background-color: var(--pipboy-color-bright); /* Invertir colores */
+    background-color: var(--pipboy-color-bright);
     color: #000000;
     text-shadow: none;
     font-weight: bold;
@@ -604,7 +640,7 @@ body {
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
 }
 
-:root.theme-amber .theme-gear-btn:hover {
+.theme-amber .theme-gear-btn:hover {
     color: #1aff1a; /* Cambia a verde en hover del tema naranja */
     filter: drop-shadow(0 0 8px rgba(26, 255, 26, 0.8));
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
@@ -616,7 +652,7 @@ body {
 
 @keyframes gearSpin {
     0% { transform: rotate(0deg); }
-    100% { transform: rotate(720deg); } /* Da dos vueltas completas */
+    100% { transform: rotate(720deg); }
 }
 
 @keyframes tv-glitch-flicker {
@@ -636,7 +672,7 @@ body {
         width: 100%;
         min-width: 100%;
         border-right: none;
-        border-bottom: 2px dashed rgba(var(--pipboy-color-rgb), 0.3);
+        border-bottom: 2px dashed var(--pipboy-alpha-03);
         padding-right: 0;
         padding-bottom: 20px;
     }
