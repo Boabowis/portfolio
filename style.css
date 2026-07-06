@@ -616,8 +616,8 @@ body {
     margin-top: 85px;
 }
 
-/* BOTÓN DE ENGRANAJE DE TEMA */
-.theme-gear-btn {
+/* BOTÓN DE SOL DE TEMA */
+.theme-sun-btn {
     background: none;
     border: none;
     color: var(--pipboy-color);
@@ -630,27 +630,27 @@ body {
     filter: drop-shadow(0 0 3px var(--pipboy-color));
 }
 
-.theme-gear-btn svg {
+.theme-sun-btn svg {
     transition: fill 0.3s ease;
 }
 
-.theme-gear-btn:hover {
+.theme-sun-btn:hover {
     color: #ffb642; /* Cambia a naranja en hover del tema verde */
     filter: drop-shadow(0 0 8px rgba(255, 182, 66, 0.8));
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
 }
 
-.theme-amber .theme-gear-btn:hover {
+.theme-amber .theme-sun-btn:hover {
     color: #1aff1a; /* Cambia a verde en hover del tema naranja */
     filter: drop-shadow(0 0 8px rgba(26, 255, 26, 0.8));
     animation: tv-glitch-flicker 0.2s steps(2) infinite;
 }
 
-.theme-gear-btn.spin-click {
-    animation: gearSpin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+.theme-sun-btn.spin-click {
+    animation: sunSpin 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes gearSpin {
+@keyframes sunSpin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(720deg); }
 }
