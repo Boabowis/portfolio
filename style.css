@@ -710,46 +710,49 @@ body {
    ESTILOS DE LA RADIO RETRO DEL PIP-BOY
    ========================================================================== */
 .pipboy-radio-container {
-    margin-top: auto;
-    border: 1px solid var(--pipboy-color);
-    padding: 12px 15px;
+    margin-top: auto; /* Empuja el reproductor abajo del todo */
+    border: 2px solid var(--pipboy-color);
+    padding: 15px;
     background-color: var(--pipboy-alpha-05);
-    border-radius: 4px;
+    border-radius: 0px; /* Bordes rectos y robustos al estilo terminal */
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 0 10px var(--pipboy-alpha-02);
+    gap: 12px;
+    box-shadow: 0 0 15px var(--pipboy-alpha-03);
     transition: border-color 0.5s ease, background-color 0.5s ease;
+    width: 100%;
 }
 
 .radio-header {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-align: center;
-    border-bottom: 1px dashed var(--pipboy-color);
-    padding-bottom: 4px;
+    border-bottom: 2px dashed var(--pipboy-color);
+    padding-bottom: 6px;
     text-shadow: var(--pipboy-shadow);
     letter-spacing: 1px;
 }
 
 .radio-station {
-    font-size: 0.85rem;
-    color: var(--pipboy-alpha-80);
+    font-size: 0.95rem;
+    color: var(--pipboy-color);
+    text-shadow: var(--pipboy-shadow);
     text-align: center;
-    margin-top: -4px;
+    margin-top: -6px;
+    opacity: 0.85;
 }
 
 .radio-track-info {
-    height: 40px;
+    height: 48px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
     text-align: center;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--pipboy-alpha-10);
-    padding: 2px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--pipboy-alpha-30);
+    padding: 4px;
 }
 
 .radio-title-container {
@@ -761,15 +764,16 @@ body {
 }
 
 #radio-title {
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: var(--pipboy-color);
+    text-shadow: var(--pipboy-shadow);
 }
 
 #radio-artist {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--pipboy-alpha-80);
-    margin-top: 1px;
+    margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -789,13 +793,13 @@ body {
 }
 
 .radio-visualizer-container {
-    height: 35px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--pipboy-alpha-03);
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--pipboy-alpha-30);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 2px;
+    border-radius: 0px;
     overflow: hidden;
 }
 
@@ -808,19 +812,24 @@ body {
 .radio-controls {
     display: flex;
     justify-content: space-between;
-    gap: 5px;
+    gap: 8px;
 }
 
 .radio-btn {
-    background: none;
-    border: 1px solid var(--pipboy-alpha-50);
+    background: transparent;
+    border: 1px solid var(--pipboy-color);
     color: var(--pipboy-color);
-    font-size: 0.9rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    padding: 3px 6px;
+    padding: 6px 10px;
     flex-grow: 1;
     text-align: center;
     transition: background-color 0.2s, color 0.2s, border-color 0.5s;
+    text-shadow: var(--pipboy-shadow);
+    box-shadow: none;
+    outline: none;
 }
 
 .radio-btn:hover {
@@ -833,43 +842,56 @@ body {
 .radio-volume {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    margin-top: 2px;
+    gap: 10px;
+    font-size: 1.05rem;
+    margin-top: 4px;
 }
 
 .radio-volume label {
     font-weight: bold;
-    color: var(--pipboy-alpha-80);
+    color: var(--pipboy-color);
+    text-shadow: var(--pipboy-shadow);
 }
 
+/* Deslizador de volumen retro personalizado */
 .radio-volume input[type="range"] {
     flex-grow: 1;
     -webkit-appearance: none;
     background: var(--pipboy-alpha-30);
-    height: 3px;
+    height: 6px;
     outline: none;
-    border-radius: 2px;
+    border: 1px solid var(--pipboy-color);
+    border-radius: 0px;
+    margin: 0;
 }
 
 .radio-volume input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 14px;
     background: var(--pipboy-color);
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 0px; /* Cuadrado/Bloque retro */
     box-shadow: var(--pipboy-shadow);
-    transition: background 0.5s ease;
+    transition: background-color 0.5s ease;
 }
 
-/* Responsivo para el reproductor */
+.radio-volume input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 14px;
+    background: var(--pipboy-color);
+    cursor: pointer;
+    border-radius: 0px;
+    border: none;
+    box-shadow: var(--pipboy-shadow);
+    transition: background-color 0.5s ease;
+}
+
+/* Responsivo para el reproductor en móviles */
 @media (max-width: 850px) {
     .pipboy-radio-container {
-        margin-top: 15px;
+        margin-top: 25px;
         width: 100%;
-        max-width: 350px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 100%;
     }
 }
