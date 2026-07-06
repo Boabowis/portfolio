@@ -284,6 +284,7 @@
 
         let audioCtx;
         let originalTabContents = {};
+        let activeStatsSection = null;
 
         // TRADUCCIONES E INTERNACIONALIZACIÓN (i18n)
         const translations = {
@@ -704,6 +705,49 @@
             originalTabContents['linkedin'] = translations[currentLang].linkedinContent;
             originalTabContents['email'] = translations[currentLang].emailContent;
             
+            // Actualizar el contenido de la pestaña activa en tiempo real (si procede)
+            const tabs = ['inicio', 'stats', 'proyectos', 'github', 'linkedin', 'email'];
+            let activeTabName = '';
+            for (let tab of tabs) {
+                const el = document.getElementById('tab-' + tab);
+                if (el && !el.classList.contains('hidden')) {
+                    activeTabName = tab;
+                    break;
+                }
+            }
+            
+            if (activeTabName === 'github') {
+                const githubWrapper = document.getElementById('github-content-wrapper');
+                if (githubWrapper) githubWrapper.innerHTML = translations[currentLang].githubContent;
+                updatePhotos();
+            } else if (activeTabName === 'linkedin') {
+                const linkedinWrapper = document.getElementById('linkedin-content-wrapper');
+                if (linkedinWrapper) linkedinWrapper.innerHTML = translations[currentLang].linkedinContent;
+                updatePhotos();
+                const qr = document.getElementById('qr-image');
+                if (qr) qr.style.clipPath = 'inset(0 0 0 0)';
+            } else if (activeTabName === 'email') {
+                const emailWrapper = document.getElementById('email-content-wrapper');
+                if (emailWrapper) emailWrapper.innerHTML = translations[currentLang].emailContent;
+                updatePhotos();
+            } else if (activeTabName === 'stats') {
+                const dataDisplay = document.getElementById('stats-data-display');
+                if (dataDisplay && !dataDisplay.classList.contains('hidden') && activeStatsSection) {
+                    let newContent = '';
+                    if (activeStatsSection === 'perfil') {
+                        newContent = translations[currentLang].statsPerfil;
+                    } else if (activeStatsSection === 'estudios') {
+                        newContent = translations[currentLang].statsEstudios;
+                    } else if (activeStatsSection === 'experiencia') {
+                        newContent = translations[currentLang].statsExperiencia;
+                    } else if (activeStatsSection === 'habilidades') {
+                        newContent = translations[currentLang].statsHabilidades;
+                    }
+                    const detailedText = document.getElementById('stats-detailed-text');
+                    if (detailedText) detailedText.innerHTML = newContent;
+                }
+            }
+            
             // Si el reproductor de radio está inicializado, actualizar UI
             if (typeof updateRadioUI === 'function') {
                 updateRadioUI();
@@ -983,6 +1027,7 @@
         // EFECTO DE INTERFERENCIA Y CAMBIO DE PANTALLA
         function triggerGlitch(seccion) {
             playPipBoySound();
+            activeStatsSection = seccion;
             const interactiveZone = document.getElementById('stats-interactive-zone');
             const dataDisplay = document.getElementById('stats-data-display');
             const detailedText = document.getElementById('stats-detailed-text');
@@ -1015,6 +1060,7 @@
         // BOTÓN PARA VOLVER ATRÁS
         function backToStatsMenu() {
             playPipBoySound();
+            activeStatsSection = null;
             if (typeWriterInterval) clearInterval(typeWriterInterval); // Para que no siga escribiendo en segundo plano
             
             const interactiveZone = document.getElementById('stats-interactive-zone');
