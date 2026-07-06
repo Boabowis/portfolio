@@ -32,6 +32,7 @@
                     <nav class="pipboy-nav-vertical">
                         <button class="nav-btn" onclick="changeTab('stats')">[ STATS ]</button>
                         <button class="nav-btn" onclick="changeTab('proyectos')">[ PROYECTOS ]</button>
+                        <button class="nav-btn" onclick="changeTab('github')">[ GITHUB ]</button>
                         <button class="nav-btn" onclick="changeTab('linkedin')">[ LINKEDIN ]</button>
                         <button class="nav-btn" onclick="changeTab('email')">[ EMAIL ]</button>
                     </nav>
@@ -108,6 +109,41 @@
                                     </div>
                                     <div>
                                         <a href="https://github.com/Boabowis/portfolio/blob/master/case_study_turismo.md" target="_blank" style="display: inline-block; padding: 8px 16px; border: 2px solid #1aff1a; color: #000; background-color: #1aff1a; font-weight: bold; text-decoration: none; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 10px rgba(26,255,26,0.5);">&gt; VER_ESTUDIO_ARQUITECTURA.DOC</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENIDO DE GITHUB -->
+                    <div id="tab-github" class="main-tab-content hidden">
+                        <div class="github-layout" id="github-content-wrapper">
+                            <div class="github-text-column">
+                                <h2>&gt; RED DE ALMACENAMIENTO DE CÓDIGO (GITHUB)</h2>
+                                <hr style="border: 1px dashed #1aff1a; margin-bottom: 20px;">
+                                <p>
+                                    <strong style="display:block; margin-bottom:5px;">[ ESTADO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Enlace externo establecido con el servidor remoto.</span>
+                                    
+                                    <strong style="display:block; margin-bottom:5px;">[ MÓDULO DE ACCESO ]</strong>
+                                    <span style="display:block; margin-bottom: 25px;">Ejecuta la transmisión para sincronizar los repositorios, clonar el código fuente y auditar los scripts del sistema central.</span>
+                                    
+                                    &gt; REPOSITORIO RAÍZ: <a href="https://github.com/Boabowis" target="_blank" class="terminal-link">https://github.com/Boabowis</a>
+                                </p>
+                            </div>
+                            <div class="github-terminal-column">
+                                <div class="hacking-container">
+                                    <span class="hacking-label">[ CONEXIÓN_ESTABLECIDA ]</span>
+                                    <div class="hacking-code" style="font-size: 0.95rem; line-height: 1.4;">
+                                        &gt; ping github.com<br>
+                                        [140.82.121.4] t=12ms<br>
+                                        &gt; git clone portfolio.git<br>
+                                        Cloning 'portfolio'...<br>
+                                        Objects: 100% (124/124)<br>
+                                        Resolving deltas: 100%<br>
+                                        &gt; git status<br>
+                                        Branch 'master' up-to-date.<br>
+                                        &gt; ready_
                                     </div>
                                 </div>
                             </div>
@@ -204,6 +240,7 @@
         let originalTabContents = {};
 
         document.addEventListener('DOMContentLoaded', () => {
+            originalTabContents['github'] = document.getElementById('github-content-wrapper').innerHTML;
             originalTabContents['linkedin'] = document.getElementById('linkedin-content-wrapper').innerHTML;
             originalTabContents['email'] = document.getElementById('email-content-wrapper').innerHTML;
         });
@@ -309,8 +346,11 @@
                 event.target.classList.add('active');
             }
 
-            // Efecto máquina de escribir para LinkedIn y Email
-            if (tabName === 'linkedin') {
+            // Efecto máquina de escribir para GitHub, LinkedIn y Email
+            if (tabName === 'github') {
+                const wrapper = document.getElementById('github-content-wrapper');
+                typeWriter(wrapper, originalTabContents['github'], 1);
+            } else if (tabName === 'linkedin') {
                 const wrapper = document.getElementById('linkedin-content-wrapper');
                 typeWriter(wrapper, originalTabContents['linkedin'], 1, (progress) => {
                     const qr = document.getElementById('qr-image');

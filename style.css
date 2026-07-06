@@ -509,6 +509,37 @@ body {
     font-weight: bold;
 }
 
+/* DISEÑO DE GITHUB */
+.github-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    flex-grow: 1;
+    align-items: flex-start;
+}
+
+.github-text-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.github-text-column h2 {
+    font-size: 2rem;
+}
+
+.github-text-column p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+}
+
+.github-terminal-column {
+    flex: 0 0 300px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 85px;
+}
+
 /* RESPONSIVE PARA PANTALLAS PEQUEÑAS / MÓVILES */
 @media (max-width: 850px) {
     .layout-container {
