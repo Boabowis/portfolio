@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault-Tec OS v101</title>
-    <link rel="stylesheet" href="style.css?v=1.5">
+    <link rel="stylesheet" href="style.css?v=1.6">
 </head>
 <body>
 
@@ -298,12 +298,23 @@
             updatePhotos();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            originalTabContents['github'] = document.getElementById('github-content-wrapper').innerHTML;
-            originalTabContents['linkedin'] = document.getElementById('linkedin-content-wrapper').innerHTML;
-            originalTabContents['email'] = document.getElementById('email-content-wrapper').innerHTML;
+        function initTabContents() {
+            const github = document.getElementById('github-content-wrapper');
+            const linkedin = document.getElementById('linkedin-content-wrapper');
+            const email = document.getElementById('email-content-wrapper');
+            
+            if (github) originalTabContents['github'] = github.innerHTML;
+            if (linkedin) originalTabContents['linkedin'] = linkedin.innerHTML;
+            if (email) originalTabContents['email'] = email.innerHTML;
+            
             updatePhotos();
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initTabContents);
+        } else {
+            initTabContents();
+        }
 
         function playVaultDoorSound() {
             try {
