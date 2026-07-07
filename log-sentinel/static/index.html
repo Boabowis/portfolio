@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Sentinel & Threat Matcher - SOC Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #080c14;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(31, 41, 55, 0.6);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-cyan: #00f2fe;
+            --accent-purple: #8b5cf6;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --font-outfit: 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body.light-theme {
+            --bg-color: #f3f4f6;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --border-color: rgba(209, 213, 219, 0.8);
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --accent-cyan: #0d9488;
+            --accent-purple: #6d28d9;
+            --color-success: #059669;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-outfit);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            background: rgba(8, 12, 20, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.light-theme header {
+            background: rgba(243, 244, 246, 0.8);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 2.2rem;
+            height: 2.2rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #080c14;
+        }
+
+        body.light-theme .logo-icon {
+            color: #ffffff;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            color: var(--color-success);
+            font-family: var(--font-mono);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Botón de Sol para cambio de tema */
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 0.4rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-primary);
+        }
+
+        body.light-theme .theme-toggle-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-cyan);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.blue::before { background: var(--accent-cyan); }
+        .stat-card.red::before { background: var(--color-danger); }
+        .stat-card.purple::before { background: var(--accent-purple); }
+        .stat-card.yellow::before { background: var(--color-warning); }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            font-family: var(--font-mono);
+        }
+
+        /* Layout columns */
+        .col-3 { grid-column: span 3; }
+        .col-2 { grid-column: span 2; }
+        .col-1 { grid-column: span 1; }
+        .col-4 { grid-column: span 4; }
+
+        /* Main widgets styling */
+        .widget {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .widget-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .widget-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: var(--accent-cyan);
+            border-radius: 2px;
+        }
+
+        /* Alert styling */
+        .alerts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.25rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+        body.light-theme ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); }
+
+        .alert-item {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            border-left-width: 4px;
+            border-radius: 6px;
+            padding: 0.85rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            gap: 1rem;
+            transition: background 0.2s;
+        }
+
+        body.light-theme .alert-item {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .alert-item:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-theme .alert-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .alert-item.danger { border-left-color: var(--color-danger); }
+        .alert-item.warning { border-left-color: var(--color-warning); }
+        .alert-item.info { border-left-color: var(--accent-cyan); }
+
+        .alert-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .alert-title {
+            font-size: 0.925rem;
+            font-weight: 600;
+        }
+
+        .alert-meta {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .alert-meta span {
+            color: var(--text-primary);
+        }
+
+        .alert-time {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            text-align: right;
+        }
+
+        .badge {
+            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-danger { background: rgba(239, 68, 68, 0.15); color: var(--color-danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--color-warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-info { background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 242, 254, 0.3); }
+
+        /* Control Panel */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+        }
+
+        .btn {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-outfit);
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        body.light-theme .btn {
+            background: #ffffff;
+        }
+
+        .btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+            border-color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        body.light-theme .btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(139, 92, 246, 0.1));
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .btn-accent:hover {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(139, 92, 246, 0.2));
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(13, 148, 136, 0.15);
+        }
+
+        /* Tabs styling for alerts */
+        .tabs-header {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.1);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        body.light-theme .tabs-header {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-outfit);
+        }
+
+        .tab-btn.active {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Logs Table Widget */
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 380px;
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        tr:hover td {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .event-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .event-login-success { background: rgba(16, 185, 129, 0.1); color: var(--color-success); }
+        .event-login-failed { background: rgba(239, 68, 68, 0.1); color: var(--color-danger); }
+        .event-file-download { background: rgba(59, 130, 246, 0.1); color: #2563eb; }
+        body.light-theme .event-file-download { color: #1d4ed8; }
+        .event-file-upload { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
+
+        /* Notification Alert Banner */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(150%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.9rem;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast-icon {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        /* Charts grid */
+        .charts-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 1024px) {
+            .dashboard-container { grid-template-columns: repeat(2, 1fr); }
+            .col-3, .col-2, .col-1 { grid-column: span 2; }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-container { grid-template-columns: 1fr; }
+            .col-3, .col-2, .col-1, .col-4 { grid-column: span 1; }
+            header { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">LS</div>
+            <div class="logo-text">
+                <h1>LOG SENTINEL</h1>
+                <p>Threat Hunting & Data Analytics Portal</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="system-status">
+                <div class="status-dot"></div>
+                <span>SOC_ENGINE_ACTIVE</span>
+            </div>
+            <!-- Botón de Sol para cambio de tema -->
+            <button class="theme-toggle-btn" onclick="toggleTheme()" title="Cambiar tema">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- STATS CARDS -->
+        <div class="stat-card blue">
+            <div class="stat-label">Logs Analizados</div>
+            <div class="stat-value" id="stat-total-logs">0</div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-label">Alertas de Hunting</div>
+            <div class="stat-value" id="stat-total-alerts">0</div>
+        </div>
+        <div class="stat-card purple">
+            <div class="stat-label">Threat Intel IoCs</div>
+            <div class="stat-value" id="stat-total-iocs">0</div>
+        </div>
+        <div class="stat-card yellow">
+            <div class="stat-label">Tráfico de Riesgo</div>
+            <div class="stat-value" id="stat-risk-percent">0%</div>
+        </div>
+
+        <!-- LEFT COLUMN: ALERTS & CONTROLS -->
+        <div class="widget col-2">
+            <div class="widget-header">
+                <div class="widget-title">Alertas de Threat Hunting</div>
+                <div class="badge badge-danger" id="alerts-count-badge">0 Alertas</div>
+            </div>
+            
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="switchAlertTab('threat')">Intel Coincidencia</button>
+                <button class="tab-btn" onclick="switchAlertTab('brute')">Fuerza Bruta</button>
+                <button class="tab-btn" onclick="switchAlertTab('exfil')">Exfiltraciones</button>
+            </div>
+
+            <div class="alerts-container" id="alerts-feed">
+                <p style="color: var(--text-secondary); text-align: center; margin-top: 2rem;">Cargando alertas del SOC...</p>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: CONTROL PANEL & METRICS CHART -->
+        <div class="widget col-1">
+            <div class="widget-header">
+                <div class="widget-title">Simulador de Amenazas</div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary);">Inyecta actividad de red maliciosa para evaluar los triggers de Threat Hunting en la base de datos SQL.</p>
+            <div class="controls-grid">
+                <button class="btn btn-accent" onclick="triggerSimulation('normal')">Log Normal</button>
+                <button class="btn btn-accent" onclick="triggerSimulation('threat-intel')">Inyectar IoC</button>
+                <button class="btn btn-accent" onclick="triggerSimulation('brute-force')">Fuerza Bruta</button>
+                <button class="btn btn-accent" onclick="triggerSimulation('exfiltration')">Exfiltracion</button>
+            </div>
+            <button class="btn" style="width: 100%; border-color: var(--accent-purple); color: var(--accent-purple);" onclick="triggerIntelUpdate()">
+                Actualizar Feeds Feodo Tracker
+            </button>
+        </div>
+
+        <div class="widget col-1">
+            <div class="widget-header">
+                <div class="widget-title">Eventos por Tipo</div>
+            </div>
+            <div class="charts-container">
+                <canvas id="eventsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- ROW 3: RECENT SERVER LOGS TABLE -->
+        <div class="widget col-4">
+            <div class="widget-header">
+                <div class="widget-title">Logs de Servidor Recientes (Ingesta en Tiempo Real)</div>
+                <button class="btn" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;" onclick="loadDashboardData()">Refrescar</button>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>IP Origen</th>
+                            <th>Usuario</th>
+                            <th>Evento</th>
+                            <th>Puerto Destino</th>
+                            <th>Bytes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-table-body">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-secondary);">Cargando registros...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="notification-toast">
+        <span class="toast-icon">[!]</span>
+        <span class="toast-message" id="notification-msg">Simulacion ejecutada con exito.</span>
+    </div>
+
+    <script>
+        // Variables de estado
+        let activeTab = 'threat';
+        let apiData = {
+            threat_intel_matches: [],
+            brute_force_alerts: [],
+            exfiltration_alerts: []
+        };
+        let chartInstance = null;
+
+        // Cargar datos al iniciar
+        document.addEventListener("DOMContentLoaded", () => {
+            // Aplicar tema guardado si existe
+            if (localStorage.getItem("dashboard-theme") === "light") {
+                document.body.classList.add("light-theme");
+            }
+            loadDashboardData();
+            setInterval(loadDashboardData, 10000);
+        });
+
+        // Alternar tema claro / oscuro
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle("light-theme");
+            localStorage.setItem("dashboard-theme", isLight ? "light" : "dark");
+            loadDashboardData(); // Recargar para actualizar colores de gráficos si es necesario
+        }
+
+        // Mostrar notificación flotante
+        function showNotification(message) {
+            const toast = document.getElementById("notification-toast");
+            document.getElementById("notification-msg").textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        // Llamar a endpoints de simulación
+        async function triggerSimulation(type) {
+            try {
+                const response = await fetch(`/api/v1/simulate/${type}`, { method: 'POST' });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    showNotification(result.message);
+                    loadDashboardData();
+                }
+            } catch (error) {
+                console.error("Error al ejecutar simulacion:", error);
+                showNotification("Error en la conexion con la API.");
+            }
+        }
+
+        // Forzar actualización de feeds de inteligencia
+        async function triggerIntelUpdate() {
+            showNotification("Sincronizando feeds...");
+            try {
+                const response = await fetch(`/api/v1/intel/update`, { method: 'POST' });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    showNotification("Feodo Tracker actualizado.");
+                    loadDashboardData();
+                }
+            } catch (error) {
+                console.error("Error al actualizar inteligencia:", error);
+                showNotification("Error al conectar con Abuse.ch");
+            }
+        }
+
+        // Cargar todas las estadísticas y alertas
+        async function loadDashboardData() {
+            try {
+                // 1. Estadísticas generales
+                const statsRes = await fetch('/api/v1/stats');
+                const statsData = await statsRes.json();
+                
+                if (statsData.status === 'success') {
+                    const stats = statsData.data;
+                    document.getElementById("stat-total-logs").textContent = stats.total_logs;
+                    document.getElementById("stat-total-alerts").textContent = stats.total_alertas;
+                    document.getElementById("stat-total-iocs").textContent = stats.total_iocs;
+                    
+                    const percent = stats.total_logs > 0 
+                        ? ((stats.total_alertas / stats.total_logs) * 100).toFixed(1) 
+                        : 0;
+                    document.getElementById("stat-risk-percent").textContent = `${percent}%`;
+                    document.getElementById("alerts-count-badge").textContent = `${stats.total_alertas} Alertas`;
+                    
+                    updateChart(stats.eventos_dist);
+                }
+
+                // 2. Alertas de Hunting
+                const alertsRes = await fetch('/api/v1/alerts');
+                const alertsData = await alertsRes.json();
+                if (alertsData.status === 'success') {
+                    apiData = alertsData.data;
+                    renderAlerts();
+                }
+
+                // 3. Tabla de Logs Recientes
+                const logsRes = await fetch('/api/v1/logs?limit=30');
+                const logsData = await logsRes.json();
+                if (logsData.status === 'success') {
+                    renderLogsTable(logsData.data);
+                }
+
+            } catch (error) {
+                console.error("Error cargando dashboard:", error);
+            }
+        }
+
+        // Pestañas de alertas
+        function switchAlertTab(tab) {
+            activeTab = tab;
+            document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+            
+            let index = 0;
+            if (tab === 'brute') index = 1;
+            if (tab === 'exfil') index = 2;
+            document.querySelectorAll(".tab-btn")[index].classList.add("active");
+            
+            renderAlerts();
+        }
+
+        // Renderizar Feed de Alertas según pestaña activa
+        function renderAlerts() {
+            const container = document.getElementById("alerts-feed");
+            container.innerHTML = "";
+
+            if (activeTab === 'threat') {
+                const alerts = apiData.threat_intel_matches;
+                if (alerts.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); margin-top:2rem;">No se detectaron IP en listas negras.</p>`;
+                    return;
+                }
+                alerts.forEach(item => {
+                    const el = document.createElement("div");
+                    el.className = "alert-item danger";
+                    el.innerHTML = `
+                        <div class="alert-content">
+                            <div class="alert-title">Coincidencia de Threat Intel (IoC)</div>
+                            <div class="alert-meta">
+                                Host interno interactuo con IP maliciosa <span>${item.ip_origen}</span>.
+                                <br>Tipo: <span>${item.tipo_amenaza}</span> | Reputacion: <span>${item.reputacion_score}/100</span>
+                                <br>Usuario: <span>${item.usuario || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="alert-time">${formatTime(item.timestamp)}</div>
+                    `;
+                    container.appendChild(el);
+                });
+            } else if (activeTab === 'brute') {
+                const alerts = apiData.brute_force_alerts;
+                if (alerts.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); margin-top:2rem;">No hay indicios de fuerza bruta.</p>`;
+                    return;
+                }
+                alerts.forEach(item => {
+                    const el = document.createElement("div");
+                    el.className = "alert-item warning";
+                    el.innerHTML = `
+                        <div class="alert-content">
+                            <div class="alert-title">Fuerza Bruta en Autenticacion</div>
+                            <div class="alert-meta">
+                                Usuario: <span>${item.usuario}</span>
+                                <br>Origen IP: <span>${item.ip_origen}</span>
+                                <br>Intentos fallidos: <span>${item.total_intentos_fallidos}</span>
+                            </div>
+                        </div>
+                        <div class="alert-time">${formatTime(item.fin_ataque)}</div>
+                    `;
+                    container.appendChild(el);
+                });
+            } else if (activeTab === 'exfil') {
+                const alerts = apiData.exfiltration_alerts;
+                if (alerts.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); margin-top:2rem;">No hay alertas de volumen de datos.</p>`;
+                    return;
+                }
+                alerts.forEach(item => {
+                    const el = document.createElement("div");
+                    el.className = "alert-item danger";
+                    el.innerHTML = `
+                        <div class="alert-content">
+                            <div class="alert-title">Trafico Masivo (Exfiltracion)</div>
+                            <div class="alert-meta">
+                                IP origen: <span>${item.ip_origen}</span>
+                                <br>Volumen: <span>${item.megabytes_totales} MB</span>
+                                <br>Puertos: <span>${item.puertos_distintos_contactados}</span> | Conexiones: <span>${item.total_conexiones}</span>
+                            </div>
+                        </div>
+                        <div class="alert-time">${formatTime(item.ultima_conexion)}</div>
+                    `;
+                    container.appendChild(el);
+                });
+            }
+        }
+
+        // Renderizar tabla de logs
+        function renderLogsTable(logs) {
+            const tbody = document.getElementById("logs-table-body");
+            tbody.innerHTML = "";
+
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">No hay registros en la base de datos.</td></tr>`;
+                return;
+            }
+
+            logs.forEach(log => {
+                const tr = document.createElement("tr");
+                
+                let bytesStr = log.bytes_transferidos + " B";
+                if (log.bytes_transferidos > 1024 * 1024) {
+                    bytesStr = (log.bytes_transferidos / (1024 * 1024)).toFixed(2) + " MB";
+                } else if (log.bytes_transferidos > 1024) {
+                    bytesStr = (log.bytes_transferidos / 1024).toFixed(2) + " KB";
+                }
+
+                tr.innerHTML = `
+                    <td>${log.timestamp}</td>
+                    <td style="color:var(--accent-cyan);">${log.ip_origen}</td>
+                    <td>${log.usuario || '-'}</td>
+                    <td><span class="event-badge event-${log.evento.replace('_', '-')}">${log.evento}</span></td>
+                    <td>${log.puerto_destino || '-'}</td>
+                    <td style="text-align:right;">${bytesStr}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function formatTime(dateTimeStr) {
+            if (!dateTimeStr) return "";
+            try {
+                const parts = dateTimeStr.split(" ");
+                if (parts.length > 1) {
+                    return parts[1];
+                }
+                return dateTimeStr;
+            } catch (e) {
+                return dateTimeStr;
+            }
+        }
+
+        // Actualizar gráfico de dona (Chart.js)
+        function updateChart(eventDist = {}) {
+            const ctx = document.getElementById('eventsChart').getContext('2d');
+            
+            const labels = Object.keys(eventDist).map(e => e.toUpperCase().replace('_', ' '));
+            const data = Object.values(eventDist);
+
+            const isLightTheme = document.body.classList.contains("light-theme");
+            const labelColor = isLightTheme ? '#4b5563' : '#9ca3af';
+            const gridColor = isLightTheme ? '#f3f4f6' : '#0b0f19';
+
+            if (chartInstance) {
+                chartInstance.data.labels = labels;
+                chartInstance.data.datasets[0].data = data;
+                chartInstance.options.plugins.legend.labels.color = labelColor;
+                chartInstance.options.datasets.doughnut.borderColor = gridColor;
+                chartInstance.update();
+                return;
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.75)',
+                            'rgba(239, 68, 68, 0.75)',
+                            'rgba(59, 130, 246, 0.75)',
+                            'rgba(139, 92, 246, 0.75)',
+                        ],
+                        borderColor: gridColor,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: labelColor,
+                                font: {
+                                    family: 'Outfit',
+                                    size: 11
+                                },
+                                boxWidth: 12
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+    </script>
+</body>
+</html>
