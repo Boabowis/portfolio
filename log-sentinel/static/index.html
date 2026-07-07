@@ -683,6 +683,21 @@
         };
         let chartInstance = null;
 
+        // Variables de estado del modo Demostración
+        let isDemoMode = false;
+        let mockLogs = [];
+        let mockStats = {
+            total_logs: 0,
+            total_alertas: 0,
+            total_iocs: 0,
+            eventos_dist: {
+                login_success: 0,
+                login_failed: 0,
+                file_download: 0,
+                file_upload: 0
+            }
+        };
+
         // Cargar datos al iniciar
         document.addEventListener("DOMContentLoaded", () => {
             // Aplicar tema guardado si existe
@@ -744,8 +759,194 @@
             }
         }
 
+        // Manejar el estado demo de la API
+        function setStatusDemo() {
+            const statusEl = document.querySelector(".system-status");
+            if (statusEl) {
+                statusEl.style.background = "rgba(59, 130, 246, 0.1)";
+                statusEl.style.borderColor = "rgba(59, 130, 246, 0.25)";
+                statusEl.style.color = "#3b82f6";
+                const dot = statusEl.querySelector(".status-dot");
+                if (dot) {
+                    dot.style.backgroundColor = "#3b82f6";
+                    dot.style.animation = "pulse 2s infinite";
+                }
+                const text = statusEl.querySelector("span");
+                if (text) text.textContent = "SOC_DEMO_ACTIVE";
+            }
+        }
+
+        // Inicializar datos simulados para el modo demostración
+        function initializeMockData() {
+            mockStats = {
+                total_logs: 185,
+                total_alertas: 3,
+                total_iocs: 5,
+                eventos_dist: {
+                    login_success: 120,
+                    login_failed: 42,
+                    file_download: 15,
+                    file_upload: 8
+                }
+            };
+            apiData = {
+                threat_intel_matches: [
+                    { ip_origen: '185.220.101.4', tipo_amenaza: 'Feodo Tracker C2', reputacion_score: 92, usuario: 'system_daemon', timestamp: '2026-07-07 16:40:12' }
+                ],
+                brute_force_alerts: [
+                    { usuario: 'admin', ip_origen: '192.168.1.144', total_intentos_fallidos: 9, fin_ataque: '2026-07-07 16:42:01' }
+                ],
+                exfiltration_alerts: [
+                    { ip_origen: '10.0.0.45', megabytes_totales: 618.5, puertos_distintos_contactados: 4, total_conexiones: 18, ultima_conexion: '2026-07-07 16:44:55' }
+                ]
+            };
+            
+            const users = ['admin', 'user1', 'system_daemon', 'root', 'guest'];
+            const events = ['login_success', 'login_failed', 'file_download', 'file_upload'];
+            const ips = ['192.168.1.144', '10.0.0.45', '185.220.101.4', '192.168.1.12', '127.0.0.1'];
+            
+            mockLogs = [];
+            let now = new Date();
+            for (let i = 0; i < 25; i++) {
+                let timeStr = new Date(now - i * 45000).toISOString().replace('T', ' ').substring(0, 19);
+                let ev = events[i % events.length];
+                let user = ev.startsWith('login') ? users[i % users.length] : '';
+                let bytes = ev.startsWith('file') ? Math.floor(Math.random() * 80000000) + 1000 : 0;
+                mockLogs.push({
+                    id: 1000 - i,
+                    timestamp: timeStr,
+                    ip_origen: ips[i % ips.length],
+                    usuario: user,
+                    evento: ev,
+                    puerto_destino: ev.startsWith('file') ? (ev === 'file_download' ? 443 : 22) : 80,
+                    bytes_transferidos: bytes
+                });
+            }
+        }
+
+        // Renderizar componentes visuales usando datos simulados
+        function renderMockDashboard() {
+            setStatusDemo();
+            
+            document.getElementById("stat-total-logs").textContent = mockStats.total_logs;
+            document.getElementById("stat-total-alerts").textContent = mockStats.total_alertas;
+            document.getElementById("stat-total-iocs").textContent = mockStats.total_iocs;
+            
+            const percent = mockStats.total_logs > 0 
+                ? ((mockStats.total_alertas / mockStats.total_logs) * 100).toFixed(1) 
+                : 0;
+            document.getElementById("stat-risk-percent").textContent = `${percent}%`;
+            document.getElementById("alerts-count-badge").textContent = `${mockStats.total_alertas} Alertas`;
+            
+            updateChart(mockStats.eventos_dist);
+            renderAlerts();
+            renderLogsTable(mockLogs);
+        }
+
+        // Simular eventos localmente en memoria (para modo demostración estático)
+        function simulateLocalDemoEvent(type) {
+            let nowStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            
+            if (type === 'normal') {
+                mockStats.total_logs += 1;
+                mockStats.eventos_dist.login_success += 1;
+                mockLogs.unshift({
+                    id: mockLogs.length + 1001,
+                    timestamp: nowStr,
+                    ip_origen: '192.168.1.52',
+                    usuario: 'user3',
+                    evento: 'login_success',
+                    puerto_destino: 80,
+                    bytes_transferidos: 450
+                });
+                showNotification("Simulado tráfico normal de red.");
+            } else if (type === 'threat-intel') {
+                mockStats.total_logs += 1;
+                mockStats.total_alertas += 1;
+                mockStats.eventos_dist.file_download += 1;
+                
+                mockLogs.unshift({
+                    id: mockLogs.length + 1001,
+                    timestamp: nowStr,
+                    ip_origen: '185.220.101.4',
+                    usuario: 'compromised_usr',
+                    evento: 'file_download',
+                    puerto_destino: 443,
+                    bytes_transferidos: 524288
+                });
+                
+                apiData.threat_intel_matches.unshift({
+                    ip_origen: '185.220.101.4',
+                    tipo_amenaza: 'Feodo Tracker C2',
+                    reputacion_score: 95,
+                    usuario: 'compromised_usr',
+                    timestamp: nowStr
+                });
+                showNotification("Simulada conexión a IP maliciosa (Coincidencia IoC).");
+            } else if (type === 'brute-force') {
+                mockStats.total_logs += 5;
+                mockStats.total_alertas += 1;
+                mockStats.eventos_dist.login_failed += 5;
+                
+                for (let i = 0; i < 5; i++) {
+                    mockLogs.unshift({
+                        id: mockLogs.length + 1001 + i,
+                        timestamp: nowStr,
+                        ip_origen: '198.51.100.22',
+                        usuario: 'root',
+                        evento: 'login_failed',
+                        puerto_destino: 22,
+                        bytes_transferidos: 0
+                    });
+                }
+                
+                apiData.brute_force_alerts.unshift({
+                    usuario: 'root',
+                    ip_origen: '198.51.100.22',
+                    total_intentos_fallidos: 5,
+                    fin_ataque: nowStr
+                });
+                showNotification("Inyectado ataque de Fuerza Bruta SSH.");
+            } else if (type === 'exfiltration') {
+                mockStats.total_logs += 1;
+                mockStats.total_alertas += 1;
+                mockStats.eventos_dist.file_upload += 1;
+                
+                let exfilBytes = 540 * 1024 * 1024; // >500 MB
+                mockLogs.unshift({
+                    id: mockLogs.length + 1001,
+                    timestamp: nowStr,
+                    ip_origen: '10.0.0.99',
+                    usuario: 'backup_admin',
+                    evento: 'file_upload',
+                    puerto_destino: 22,
+                    bytes_transferidos: exfilBytes
+                });
+                
+                apiData.exfiltration_alerts.unshift({
+                    ip_origen: '10.0.0.99',
+                    megabytes_totales: 540,
+                    puertos_distintos_contactados: 1,
+                    total_conexiones: 1,
+                    ultima_conexion: nowStr
+                });
+                showNotification("Inyectada exfiltración de datos (>500 MB).");
+            }
+            
+            if (mockLogs.length > 50) {
+                mockLogs = mockLogs.slice(0, 50);
+            }
+            
+            renderMockDashboard();
+        }
+
         // Llamar a endpoints de simulación
         async function triggerSimulation(type) {
+            if (isDemoMode) {
+                simulateLocalDemoEvent(type);
+                return;
+            }
+
             try {
                 const response = await fetch(API_BASE + `/api/v1/simulate/${type}`, { method: 'POST' });
                 const result = await response.json();
@@ -761,6 +962,16 @@
 
         // Forzar actualización de feeds de inteligencia
         async function triggerIntelUpdate() {
+            if (isDemoMode) {
+                showNotification("Sincronizando feeds...");
+                setTimeout(() => {
+                    mockStats.total_iocs += 12;
+                    renderMockDashboard();
+                    showNotification("Feodo Tracker actualizado (Demostración).");
+                }, 1000);
+                return;
+            }
+
             showNotification("Sincronizando feeds...");
             try {
                 const response = await fetch(API_BASE + `/api/v1/intel/update`, { method: 'POST' });
@@ -777,6 +988,11 @@
 
         // Cargar todas las estadísticas y alertas
         async function loadDashboardData() {
+            if (isDemoMode) {
+                renderMockDashboard();
+                return;
+            }
+
             try {
                 // 1. Estadísticas generales
                 const statsRes = await fetch(API_BASE + '/api/v1/stats');
@@ -816,7 +1032,10 @@
 
             } catch (error) {
                 console.error("Error cargando dashboard:", error);
-                setStatusOffline();
+                // Activar modo demostración de manera transparente si el backend no responde
+                isDemoMode = true;
+                initializeMockData();
+                renderMockDashboard();
             }
         }
 
