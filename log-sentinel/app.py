@@ -6,10 +6,21 @@ import threat_intel
 import generator
 import hunter
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(
     title="Log Sentinel & Threat Matcher API",
     description="API para análisis de datos de red e inteligencia de amenazas para Threat Hunting.",
     version="1.0.0"
+)
+
+# Configurar middleware CORS para permitir peticiones desde archivos locales (file://) y portafolio
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Inicializar DB al arrancar la app

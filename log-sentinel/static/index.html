@@ -668,6 +668,12 @@
     </div>
 
     <script>
+        // Determinar la base URL de la API dinámicamente
+        // Si se abre desde file:// o github.io (no localhost), apuntamos al backend de localhost
+        const API_BASE = (window.location.protocol === 'file:' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1'))
+            ? 'http://127.0.0.1:8000'
+            : '';
+
         // Variables de estado
         let activeTab = 'threat';
         let apiData = {
@@ -704,10 +710,44 @@
             }, 3000);
         }
 
+        // Manejar el estado offline de la API
+        function setStatusOffline() {
+            const statusEl = document.querySelector(".system-status");
+            if (statusEl) {
+                statusEl.style.background = "rgba(239, 68, 68, 0.1)";
+                statusEl.style.borderColor = "rgba(239, 68, 68, 0.2)";
+                statusEl.style.color = "var(--color-danger)";
+                const dot = statusEl.querySelector(".status-dot");
+                if (dot) {
+                    dot.style.backgroundColor = "var(--color-danger)";
+                    dot.style.animation = "none";
+                }
+                const text = statusEl.querySelector("span");
+                if (text) text.textContent = "SOC_ENGINE_OFFLINE";
+            }
+        }
+
+        // Manejar el estado activo de la API
+        function setStatusActive() {
+            const statusEl = document.querySelector(".system-status");
+            if (statusEl) {
+                statusEl.style.background = "";
+                statusEl.style.borderColor = "";
+                statusEl.style.color = "";
+                const dot = statusEl.querySelector(".status-dot");
+                if (dot) {
+                    dot.style.backgroundColor = "";
+                    dot.style.animation = "";
+                }
+                const text = statusEl.querySelector("span");
+                if (text) text.textContent = "SOC_ENGINE_ACTIVE";
+            }
+        }
+
         // Llamar a endpoints de simulación
         async function triggerSimulation(type) {
             try {
-                const response = await fetch(`/api/v1/simulate/${type}`, { method: 'POST' });
+                const response = await fetch(API_BASE + `/api/v1/simulate/${type}`, { method: 'POST' });
                 const result = await response.json();
                 if (result.status === 'success') {
                     showNotification(result.message);
@@ -715,7 +755,7 @@
                 }
             } catch (error) {
                 console.error("Error al ejecutar simulacion:", error);
-                showNotification("Error en la conexion con la API.");
+                showNotification("Error de conexion: El backend no responde.");
             }
         }
 
@@ -723,7 +763,7 @@
         async function triggerIntelUpdate() {
             showNotification("Sincronizando feeds...");
             try {
-                const response = await fetch(`/api/v1/intel/update`, { method: 'POST' });
+                const response = await fetch(API_BASE + `/api/v1/intel/update`, { method: 'POST' });
                 const result = await response.json();
                 if (result.status === 'success') {
                     showNotification("Feodo Tracker actualizado.");
@@ -731,7 +771,7 @@
                 }
             } catch (error) {
                 console.error("Error al actualizar inteligencia:", error);
-                showNotification("Error al conectar con Abuse.ch");
+                showNotification("Error de conexion: El backend no responde.");
             }
         }
 
@@ -739,7 +779,7 @@
         async function loadDashboardData() {
             try {
                 // 1. Estadísticas generales
-                const statsRes = await fetch('/api/v1/stats');
+                const statsRes = await fetch(API_BASE + '/api/v1/stats');
                 const statsData = await statsRes.json();
                 
                 if (statsData.status === 'success') {
@@ -758,7 +798,7 @@
                 }
 
                 // 2. Alertas de Hunting
-                const alertsRes = await fetch('/api/v1/alerts');
+                const alertsRes = await fetch(API_BASE + '/api/v1/alerts');
                 const alertsData = await alertsRes.json();
                 if (alertsData.status === 'success') {
                     apiData = alertsData.data;
@@ -766,14 +806,17 @@
                 }
 
                 // 3. Tabla de Logs Recientes
-                const logsRes = await fetch('/api/v1/logs?limit=30');
+                const logsRes = await fetch(API_BASE + '/api/v1/logs?limit=30');
                 const logsData = await logsRes.json();
                 if (logsData.status === 'success') {
                     renderLogsTable(logsData.data);
                 }
 
+                setStatusActive();
+
             } catch (error) {
                 console.error("Error cargando dashboard:", error);
+                setStatusOffline();
             }
         }
 
