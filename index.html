@@ -700,13 +700,29 @@
             }
         };
 
+        const flags = {
+            es: `<svg class="flag-icon" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" style="display: block; width: 28px; height: 18px; filter: drop-shadow(0 0 2px currentColor);">
+                     <rect x="1" y="1" width="28" height="18" rx="2" />
+                     <line x1="1" y1="5" x2="29" y2="5" />
+                     <line x1="1" y1="15" x2="29" y2="15" />
+                     <circle cx="8" cy="10" r="2" />
+                 </svg>`,
+            en: `<svg class="flag-icon" viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" style="display: block; width: 28px; height: 18px; filter: drop-shadow(0 0 2px currentColor);">
+                     <rect x="1" y="1" width="28" height="18" rx="2" />
+                     <line x1="1" y1="1" x2="29" y2="19" />
+                     <line x1="29" y1="1" x2="1" y2="19" />
+                     <line x1="15" y1="1" x2="15" y2="19" stroke-width="2" />
+                     <line x1="1" y1="10" x2="29" y2="10" stroke-width="2" />
+                 </svg>`
+        };
+
         let currentLang = localStorage.getItem('language') || 'es';
 
         function applyTranslations() {
-            // Actualizar botón de idioma
+            // Actualizar botón de idioma con la bandera correspondiente
             const langBtn = document.getElementById('lang-toggle');
             if (langBtn) {
-                langBtn.innerText = `[ ${currentLang.toUpperCase()} ]`;
+                langBtn.innerHTML = flags[currentLang];
             }
             
             // Actualizar título de la página

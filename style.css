@@ -657,21 +657,20 @@ body {
     background: transparent;
     border: 1px solid var(--pipboy-color);
     color: var(--pipboy-color);
-    padding: 4px 10px;
-    font-size: 1rem;
-    font-weight: bold;
+    padding: 4px 8px;
     cursor: pointer;
-    text-shadow: var(--pipboy-shadow);
     transition: background-color 0.2s, color 0.2s, border-color 0.5s;
     outline: none;
-    font-family: 'Share Tech Mono', monospace;
     box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
 }
 
 #lang-toggle:hover {
     background-color: var(--pipboy-color);
     color: var(--pipboy-bg);
-    text-shadow: none;
 }
 
 @keyframes sunSpin {
