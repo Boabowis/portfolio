@@ -1148,39 +1148,34 @@
         // ==========================================
         const radioTracks = [
             {
-                title: "I Don't Want to Set the World on Fire",
-                artist: "The Ink Spots",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/The%20Ink%20Spots%20-%20I%20Don%27t%20Want%20to%20Set%20the%20World%20on%20Fire.mp3"
-            },
-            {
-                title: "Maybe",
-                artist: "The Ink Spots",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/The%20Ink%20Spots%20-%20Maybe.mp3"
-            },
-            {
-                title: "Anything Goes",
-                artist: "Cole Porter",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Cole%20Porter%20-%20Anything%20Goes.mp3"
+                title: "Atom Bomb Baby",
+                artist: "The Five Stars",
+                url: "audio/atom_bomb_baby.mp3"
             },
             {
                 title: "Civilization (Bingo Bango Bongo)",
                 artist: "Danny Kaye & The Andrews Sisters",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Danny%20Kaye%20and%20The%20Andrews%20Sisters%20-%20Civilization.mp3"
+                url: "audio/civilization.mp3"
             },
             {
-                title: "Butcher Pete (Part 1)",
-                artist: "Roy Brown",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Roy%20Brown%20-%20Butcher%20Pete%20%28Part%201%29.mp3"
+                title: "I Don't Want to Set the World on Fire",
+                artist: "The Ink Spots",
+                url: "audio/i_dont_want_to_set_the_world_on_fire.mp3"
             },
             {
-                title: "Let's Go Sunning",
-                artist: "Jack Shaindlin",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Jack%20Shaindlin%20-%20Let%27s%20Go%20Sunning.mp3"
+                title: "Lone Star",
+                artist: "Tony Marcus",
+                url: "audio/lone_star.mp3"
             },
             {
-                title: "Crazy He Calls Me",
-                artist: "Billie Holiday",
-                url: "https://archive.org/download/Fallout_3_galaxy_news_radio-2008/Billie%20Holiday%20-%20Crazy%20He%20Calls%20Me.mp3"
+                title: "Uranium Fever",
+                artist: "Elton Britt",
+                url: "audio/uranium_fever.mp3"
+            },
+            {
+                title: "Working for the Man",
+                artist: "Roy Orbison",
+                url: "audio/working_for_the_man.mp3"
             }
         ];
 
@@ -1197,6 +1192,18 @@
         let isRadioPlaying = false;
         let radioAudio = new Audio();
         
+        // Cargar posición guardada (minuto de la canción) si existe
+        const savedTime = localStorage.getItem('radioCurrentTime');
+        if (savedTime !== null) {
+            const parsedTime = parseFloat(savedTime);
+            if (!isNaN(parsedTime) && parsedTime > 0) {
+                radioAudio.addEventListener('loadedmetadata', function onLoaded() {
+                    radioAudio.currentTime = parsedTime;
+                    radioAudio.removeEventListener('loadedmetadata', onLoaded);
+                });
+            }
+        }
+
         // Cargar primera pista pero no reproducir automáticamente
         radioAudio.src = radioTracks[currentTrackIndex].url;
         
@@ -1211,8 +1218,16 @@
             radioAudio.volume = 0.5;
         }
         
+        // Guardar la posición actual (minuto) en tiempo real
+        radioAudio.addEventListener('timeupdate', () => {
+            if (radioAudio.currentTime > 0) {
+                localStorage.setItem('radioCurrentTime', radioAudio.currentTime);
+            }
+        });
+
         // Manejar el final de una pista para saltar a la siguiente automáticamente
         radioAudio.addEventListener('ended', () => {
+            localStorage.setItem('radioCurrentTime', 0);
             nextTrack();
         });
 
@@ -1276,6 +1291,7 @@
             playPipBoySound();
             currentTrackIndex = (currentTrackIndex + 1) % radioTracks.length;
             localStorage.setItem('radioTrackIndex', currentTrackIndex);
+            localStorage.setItem('radioCurrentTime', 0); // Reset time for new track
             radioAudio.src = radioTracks[currentTrackIndex].url;
             if (isRadioPlaying) {
                 radioAudio.play().then(() => {
@@ -1290,6 +1306,7 @@
             playPipBoySound();
             currentTrackIndex = (currentTrackIndex - 1 + radioTracks.length) % radioTracks.length;
             localStorage.setItem('radioTrackIndex', currentTrackIndex);
+            localStorage.setItem('radioCurrentTime', 0); // Reset time for new track
             radioAudio.src = radioTracks[currentTrackIndex].url;
             if (isRadioPlaying) {
                 radioAudio.play().then(() => {
