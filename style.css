@@ -935,14 +935,7 @@ body {
 
 .certs-divider {
     border: 1px dashed var(--pipboy-color);
-    margin-bottom: 20px;
-}
-
-.certs-subtitle {
-    font-size: 1rem;
-    color: var(--pipboy-alpha-80);
-    text-shadow: none;
-    margin-bottom: 25px;
+    margin-bottom: 24px;
 }
 
 .certs-grid {
@@ -1028,7 +1021,7 @@ body {
 
 .cert-card-body h3 {
     font-size: 1.02rem;
-    margin-bottom: 6px;
+    margin-bottom: 0;
     color: var(--pipboy-color);
     text-shadow: 0 0 5px var(--pipboy-alpha-50);
 }
