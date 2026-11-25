@@ -23,11 +23,16 @@ El repositorio está organizado en módulos independientes que demuestran difere
 *   **Tecnologías:** Dart, Flutter, Cloud Firestore, Firebase Storage, Python.
 *   **Descripción:** Un desglose técnico pormenorizado sobre la optimización de costes y latencia en una base de datos móvil NoSQL a gran escala. Analiza la migración de esquemas hacia modelos de almacenamiento indexado en CDN, logrando una reducción del 70% en lecturas de bases de datos y la implementación de reglas de validación criptográfica en la nube.
 
+### 4. Archivo de Certificaciones
+*   **Ubicación:** `certs/`
+*   **Descripción:** Repositorio de credenciales y certificados académicos/técnicos (como el certificado provisional *Cambridge English C1 Advanced*, con imagen personal pixelada para privacidad) accesibles desde la pestaña `[ CERTIFICADOS ]`.
+
 ## Características del Terminal Principal
 
 La interfaz del portafolio simula un monitor de tubo (CRT) clásico e incluye:
 *   **Efectos Visuales Avanzados:** Líneas de barrido analógico (scanlines), aberración cromática en texto y parpadeo de pantalla controlado por CSS.
 *   **Efecto Typewriter:** Revelación progresiva de caracteres por software para simular la velocidad de transmisión de terminales antiguos.
+*   **Visor Integrado de Certificados:** Cuadrícula de credenciales con visor PDF integrado en el panel de contenido (`[ X ]` para cerrar o apertura en nueva pestaña), que mantiene operativo el menú lateral y la radio, y se cierra automáticamente al cambiar de categoría.
 *   **Integración de API de Correo:** Formulario interactivo integrado con Formspree para la captación asíncrona de mensajes sin redirecciones.
 *   **Internacionalización (i18n):** Traducción dinámica e instantánea de toda la terminal entre español e inglés controlada desde el frontend.
 

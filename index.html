@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vault-Tec OS v101</title>
-    <link rel="stylesheet" href="style.css?v=2.1">
+    <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body>
 
@@ -47,6 +47,7 @@
                         <button class="nav-btn" onclick="changeTab('github')" data-i18n="navGithub">[ GITHUB ]</button>
                         <button class="nav-btn" onclick="changeTab('linkedin')" data-i18n="navLinkedin">[ LINKEDIN ]</button>
                         <button class="nav-btn" onclick="changeTab('email')" data-i18n="navEmail">[ EMAIL ]</button>
+                        <button class="nav-btn" onclick="changeTab('certificados')" data-i18n="navCertificados">[ CERTIFICADOS ]</button>
                     </nav>
 
                     <!-- REPRODUCTOR DE RADIO RETRO -->
@@ -284,6 +285,53 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- CONTENIDO DE CERTIFICADOS -->
+                    <div id="tab-certificados" class="main-tab-content hidden">
+                        <div class="certs-layout">
+                            <h2 class="certs-heading" data-i18n="certsHeading">&gt; ARCHIVO DE CERTIFICACIONES VERIFICADAS</h2>
+                            <hr class="certs-divider">
+                            <p class="certs-subtitle" data-i18n="certsSubtitle">Selecciona una credencial para inspeccionar el documento en este terminal sin interrumpir tu navegación.</p>
+
+                            <div class="certs-grid">
+                                <!-- TARJETA 1: CAMBRIDGE C1 ADVANCED (PROVISIONAL) -->
+                                <article class="cert-card" onclick="openCertViewer('certs/cambridge-c1-provisional.pdf', 'cert1DocTitle')" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCertViewer('certs/cambridge-c1-provisional.pdf', 'cert1DocTitle');}">
+                                    <div class="cert-card-top">
+                                        <span class="cert-badge" data-i18n="cert1Badge">[ CAMBRIDGE // C1 ]</span>
+                                        <span class="cert-status" data-i18n="cert1Status">PROVISIONAL</span>
+                                    </div>
+                                    <div class="cert-preview-box">
+                                        <div class="cert-seal">C1</div>
+                                        <div class="cert-preview-meta">
+                                            <span>SCORE: 189</span>
+                                            <span>GRADE C</span>
+                                        </div>
+                                    </div>
+                                    <div class="cert-card-body">
+                                        <h3 data-i18n="cert1Title">[ INGLÉS C1 ADVANCED ]</h3>
+                                        <p data-i18n="cert1Desc">Cambridge English · Statement of Results (Oct 2026). Speaking: 205 · Overall: 189.</p>
+                                    </div>
+                                    <div class="cert-card-footer">
+                                        <span class="cert-open-btn" data-i18n="certOpenBtn">&gt; ABRIR_ARCHIVO.PDF</span>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VISOR INTEGRADO DE CERTIFICADOS (NO BLOQUEA EL MENÚ NI LA RADIO) -->
+                    <div id="cert-viewer-overlay" class="cert-viewer-overlay hidden" role="dialog" aria-modal="false" aria-labelledby="cert-viewer-title">
+                        <div class="cert-viewer-header">
+                            <span id="cert-viewer-title" class="cert-viewer-title">&gt; ARCHIVO.PDF</span>
+                            <div class="cert-viewer-actions">
+                                <a id="cert-viewer-external" href="#" target="_blank" rel="noopener noreferrer" class="cert-viewer-link" data-i18n="certOpenExternal">[ ↗ PESTAÑA ]</a>
+                                <button type="button" class="cert-viewer-close" onclick="closeCertViewer()" title="Cerrar visor" aria-label="Cerrar visor">[ X ]</button>
+                            </div>
+                        </div>
+                        <div class="cert-viewer-body">
+                            <iframe id="cert-viewer-frame" src="" title="Visor de certificado"></iframe>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>
@@ -313,6 +361,7 @@
                 navGithub: "[ GITHUB ]",
                 navLinkedin: "[ LINKEDIN ]",
                 navEmail: "[ EMAIL ]",
+                navCertificados: "[ CERTIFICADOS ]",
                 
                 // Inicio
                 hello: "HOLA, SOY ALBA HOCES",
@@ -376,7 +425,7 @@
     <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
     
     <strong style="display:block; margin-bottom:5px;">[ IDIOMAS ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; Inglés (B2).</span>
+    <span style="display:block; margin-bottom: 25px;">&gt; Inglés (C1).</span>
 </p>`,
                 
                 // Proyectos
@@ -498,7 +547,18 @@
                 radioOff: "RADIO APAGADA",
                 radioPaused: "RADIO EN PAUSA",
                 radioError: "ERROR DE SINTONÍA",
-                radioRetry: "INTENTE DE NUEVO"
+                radioRetry: "INTENTE DE NUEVO",
+
+                // Certificados
+                certsHeading: "&gt; ARCHIVO DE CERTIFICACIONES VERIFICADAS",
+                certsSubtitle: "Selecciona una credencial para inspeccionar el documento en este terminal sin interrumpir tu navegación.",
+                cert1Badge: "[ CAMBRIDGE // C1 ]",
+                cert1Status: "PROVISIONAL",
+                cert1Title: "[ INGLÉS C1 ADVANCED ]",
+                cert1Desc: "Cambridge English · Statement of Results (Oct 2026). Speaking: 205 · Overall: 189.",
+                cert1DocTitle: "&gt; CAMBRIDGE_C1_PROVISIONAL.PDF",
+                certOpenBtn: "&gt; ABRIR_ARCHIVO.PDF",
+                certOpenExternal: "[ ↗ PESTAÑA ]"
             },
             en: {
                 title: "Vault-Tec OS v101",
@@ -511,6 +571,7 @@
                 navGithub: "[ GITHUB ]",
                 navLinkedin: "[ LINKEDIN ]",
                 navEmail: "[ EMAIL ]",
+                navCertificados: "[ CERTIFICATES ]",
                 
                 // Inicio
                 hello: "HELLO, I'M ALBA HOCES",
@@ -574,7 +635,7 @@
     <span style="display:block; margin-bottom: 25px;">&gt; Git, Docker, DBeaver, Android Studio, Firebase CLI, RevenueCat SDK.</span>
     
     <strong style="display:block; margin-bottom:5px;">[ LANGUAGES ]</strong>
-    <span style="display:block; margin-bottom: 25px;">&gt; English (B2).</span>
+    <span style="display:block; margin-bottom: 25px;">&gt; English (C1).</span>
 </p>`,
                 
                 // Proyectos
@@ -696,7 +757,18 @@
                 radioOff: "RADIO OFF",
                 radioPaused: "RADIO PAUSED",
                 radioError: "TUNING ERROR",
-                radioRetry: "TRY AGAIN"
+                radioRetry: "TRY AGAIN",
+
+                // Certificates
+                certsHeading: "&gt; VERIFIED CERTIFICATIONS ARCHIVE",
+                certsSubtitle: "Select a credential to inspect the document right inside this terminal without interrupting your navigation.",
+                cert1Badge: "[ CAMBRIDGE // C1 ]",
+                cert1Status: "PROVISIONAL",
+                cert1Title: "[ ENGLISH C1 ADVANCED ]",
+                cert1Desc: "Cambridge English · Statement of Results (Oct 2026). Speaking: 205 · Overall: 189.",
+                cert1DocTitle: "&gt; CAMBRIDGE_C1_PROVISIONAL.PDF",
+                certOpenBtn: "&gt; OPEN_FILE.PDF",
+                certOpenExternal: "[ ↗ NEW TAB ]"
             }
         };
 
@@ -717,6 +789,7 @@
         };
 
         let currentLang = localStorage.getItem('language') || 'es';
+        let activeCertTitleKey = null;
 
         function applyTranslations() {
             // Actualizar botón de idioma con la bandera correspondiente
@@ -742,7 +815,7 @@
             originalTabContents['email'] = translations[currentLang].emailContent;
             
             // Actualizar el contenido de la pestaña activa en tiempo real (si procede)
-            const tabs = ['inicio', 'stats', 'proyectos', 'github', 'linkedin', 'email'];
+            const tabs = ['inicio', 'stats', 'proyectos', 'github', 'linkedin', 'email', 'certificados'];
             let activeTabName = '';
             for (let tab of tabs) {
                 const el = document.getElementById('tab-' + tab);
@@ -750,6 +823,11 @@
                     activeTabName = tab;
                     break;
                 }
+            }
+
+            if (activeCertTitleKey && translations[currentLang][activeCertTitleKey]) {
+                const viewerTitle = document.getElementById('cert-viewer-title');
+                if (viewerTitle) viewerTitle.innerHTML = translations[currentLang][activeCertTitleKey];
             }
             
             if (activeTabName === 'github') {
@@ -951,8 +1029,61 @@
             }
         }
 
+        function openCertViewer(fileUrl, titleKey) {
+            playPipBoySound();
+            const displayArea = document.getElementById('tab-display-area');
+            const overlay = document.getElementById('cert-viewer-overlay');
+            const frame = document.getElementById('cert-viewer-frame');
+            const titleEl = document.getElementById('cert-viewer-title');
+            const externalLink = document.getElementById('cert-viewer-external');
+
+            if (!overlay || !frame) return;
+
+            activeCertTitleKey = titleKey || null;
+            if (titleEl && titleKey && translations[currentLang][titleKey]) {
+                titleEl.innerHTML = translations[currentLang][titleKey];
+            }
+            if (externalLink) {
+                externalLink.href = fileUrl;
+            }
+
+            if (displayArea) {
+                displayArea.scrollTop = 0;
+                displayArea.style.overflowY = 'hidden';
+            }
+
+            frame.src = fileUrl + '#view=FitH';
+            overlay.classList.remove('hidden');
+            overlay.classList.add('fade-in');
+        }
+
+        function closeCertViewer(silent = false) {
+            const overlay = document.getElementById('cert-viewer-overlay');
+            const frame = document.getElementById('cert-viewer-frame');
+            const displayArea = document.getElementById('tab-display-area');
+
+            if (!overlay || overlay.classList.contains('hidden')) return;
+
+            if (!silent) {
+                playPipBoySound();
+            }
+
+            overlay.classList.add('hidden');
+            overlay.classList.remove('fade-in');
+            if (frame) frame.src = '';
+            if (displayArea) displayArea.style.overflowY = '';
+            activeCertTitleKey = null;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCertViewer();
+            }
+        });
+
         function changeTab(tabName) {
             playPipBoySound();
+            closeCertViewer(true);
 
             if (typeWriterInterval) clearInterval(typeWriterInterval);
 

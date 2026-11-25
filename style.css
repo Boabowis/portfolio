@@ -194,6 +194,7 @@ body {
     transition: border-color 0.5s ease;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .welcome-text {
@@ -244,6 +245,7 @@ body {
 }
 
 .content-display {
+    position: relative;
     flex-grow: 1;
     height: 100%;
     padding: 20px 20px 20px 40px;
@@ -914,5 +916,230 @@ body {
         margin-top: 25px;
         width: 100%;
         max-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   SECCIÓN DE CERTIFICADOS Y VISOR INTEGRADO
+   ========================================================================== */
+.certs-layout {
+    padding: 20px;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.certs-heading {
+    margin-bottom: 20px;
+}
+
+.certs-divider {
+    border: 1px dashed var(--pipboy-color);
+    margin-bottom: 20px;
+}
+
+.certs-subtitle {
+    font-size: 1rem;
+    color: var(--pipboy-alpha-80);
+    text-shadow: none;
+    margin-bottom: 25px;
+}
+
+.certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 270px));
+    gap: 18px;
+    align-items: stretch;
+}
+
+.cert-card {
+    border: 1px solid var(--pipboy-color);
+    padding: 14px;
+    background: var(--pipboy-alpha-05);
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--pipboy-alpha-02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    outline: none;
+}
+
+.cert-card:hover,
+.cert-card:focus-visible {
+    transform: translateY(-2px);
+    background: var(--pipboy-alpha-10);
+    box-shadow: 0 0 16px var(--pipboy-alpha-50);
+}
+
+.cert-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+}
+
+.cert-badge {
+    color: var(--pipboy-color);
+    font-weight: bold;
+}
+
+.cert-status {
+    border: 1px dashed var(--pipboy-color);
+    padding: 2px 6px;
+    font-size: 0.72rem;
+    color: var(--pipboy-color);
+}
+
+.cert-preview-box {
+    height: 105px;
+    border: 1px solid var(--pipboy-alpha-03);
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 10px;
+}
+
+.cert-seal {
+    width: 58px;
+    height: 58px;
+    border: 2px solid var(--pipboy-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 0 10px var(--pipboy-alpha-03);
+}
+
+.cert-preview-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.cert-card-body h3 {
+    font-size: 1.02rem;
+    margin-bottom: 6px;
+    color: var(--pipboy-color);
+    text-shadow: 0 0 5px var(--pipboy-alpha-50);
+}
+
+.cert-card-body p {
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--pipboy-alpha-80);
+    text-shadow: none;
+}
+
+.cert-card-footer {
+    margin-top: 4px;
+}
+
+.cert-open-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 2px solid var(--pipboy-color);
+    color: var(--pipboy-bg);
+    background-color: var(--pipboy-color);
+    font-weight: bold;
+    font-size: 0.8rem;
+    box-shadow: 0 0 10px var(--pipboy-alpha-50);
+    transition: opacity 0.2s ease;
+}
+
+.cert-card:hover .cert-open-btn {
+    opacity: 0.9;
+}
+
+/* VISOR FLOTANTE DENTRO DEL PANEL DERECHO */
+.cert-viewer-overlay {
+    position: absolute;
+    inset: 12px 12px 12px 24px;
+    z-index: 8;
+    background-color: var(--pipboy-bg);
+    border: 2px solid var(--pipboy-color);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.85), 0 0 14px var(--pipboy-alpha-03);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.cert-viewer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--pipboy-color);
+    background-color: var(--pipboy-alpha-10);
+    flex-shrink: 0;
+}
+
+.cert-viewer-title {
+    font-size: 1rem;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cert-viewer-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.cert-viewer-link,
+.cert-viewer-close {
+    background: transparent;
+    border: 1px solid var(--pipboy-color);
+    color: var(--pipboy-color);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 4px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.cert-viewer-link:hover,
+.cert-viewer-close:hover {
+    background-color: var(--pipboy-color);
+    color: var(--pipboy-bg);
+    text-shadow: none;
+}
+
+.cert-viewer-body {
+    flex-grow: 1;
+    min-height: 0;
+    background: #111;
+}
+
+.cert-viewer-body iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #fff;
+}
+
+@media (max-width: 850px) {
+    .certs-grid {
+        grid-template-columns: 1fr;
+    }
+    .cert-viewer-overlay {
+        inset: 8px;
+        min-height: 420px;
     }
 }
